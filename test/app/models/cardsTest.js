@@ -1,4 +1,4 @@
-const Cards = require('./../../../../app/models/cards');
+const Cards = require('./../../../app/models/cards');
 const expect = require('chai').expect;
 describe('Cards', function () {
     it('should be instance of Deck', function () {

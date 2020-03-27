@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-var setHighest = require('./../../../../app/engine/setHighest').setHighest;
+var setHighest = require('./../../../app/engine/setHighest').setHighest;
 
 describe('setHighest', function () {
     it('should return highest card in a deck', function () {
