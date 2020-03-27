@@ -1,9 +1,9 @@
-const game = require('../../../app/engine/game').Game;
+const game = require('../../../../app/models/game').Game;
 const expect = require('chai').expect;
 const sinon = require('sinon');
-const Cards = require('../../../app/engine/cards');
-const sortCards = require('../../../app/engine/sortCards');
-const setHighest = require('../../../app/engine/setHighest')
+const Cards = require('../../../../app/models/cards');
+const sortCards = require('../../../../app/engine/sortCards');
+const setHighest = require('../../../../app/engine/setHighest')
 
 describe('Game addplayer method', function () {
     it('Takes player name(session) and socket-id and add it to players list as an object', function () {

@@ -1,7 +1,7 @@
 var Cards = require('../../../app/engine/cards');
 const expect = require('chai').expect;
 var sinon = require('sinon');
-var findFirstace = require('../../../app/engine/findFirstace');
+var findFirstace = require('../../../../app/engine/findFirstace');
 describe('FindfirstAce', function () {
     it('should take deck of cards an return player index who has the first ace', function () {
         var object = new Cards();
