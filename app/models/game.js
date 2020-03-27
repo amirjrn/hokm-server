@@ -1,7 +1,7 @@
 const Cards = require('./cards');
-const findFirstَََAce = require('./findFirstace');
-const setHighest = require('./setHighest');
-const checkFull = require('./checkFull');
+const findFirstَََAce = require('../engine/findFirstace');
+const setHighest = require('../engine/setHighest');
+const checkFull = require('../engine/checkFull');
 class Game {
     constructor(name) {
         this.nameOfGame = name;
@@ -41,6 +41,10 @@ class Game {
         }
         this.setPlayerTurn(this.hakem);
     }
+    //There are three situations where players turn changes : 
+    // 1-hakem is set : always hakem is the player to play;
+    // 2-card is played : the next player after one who has played card ;
+    // 3-winner Of bazi has been choosen : the player who has played the highest card ;
     setPlayerTurn(hakemOrWinner) {
         if (hakemOrWinner !== undefined) {
             this.playerTurn = hakemOrWinner;

@@ -1,5 +1,5 @@
-const games = require('../engine/games').games;
-const addGame = require('../engine/games').addGame;
+const games = require('../models/games').games;
+const addGame = require('../models/games').addGame;
 const checkStatus = require('./helper/checkStatus');
 
 function ioEvents(io) {
