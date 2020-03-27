@@ -4,6 +4,7 @@ function setHighest(deck, hokm, currentCard) {
     var filteredDeck = deck.filter((card) => card[1] === currentCard);
     //filter cards which theirs suit is equal to hokm;
     var hokmsInDeck = deck.filter((card) => card[1] === hokm);
-    return hokmsInDeck.length !== 0 ? sortCards(hokmsInDeck) : sortCards(filteredDeck);
+    var Deck = hokmsInDeck.length !== 0 ? sortCards(hokmsInDeck) : sortCards(filteredDeck);
+    return Deck[0];
 }
 module.exports.setHighest = setHighest;

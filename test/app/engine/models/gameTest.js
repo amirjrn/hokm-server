@@ -1,9 +1,9 @@
-const game = require('../../../../app/models/game').Game;
+const game = require('./../../../../app/models/game').Game;
 const expect = require('chai').expect;
 const sinon = require('sinon');
-const Cards = require('../../../../app/models/cards');
-const sortCards = require('../../../../app/engine/sortCards');
-const setHighest = require('../../../../app/engine/setHighest')
+const Cards = require('./../../../../app/models/cards');
+const sortCards = require('./../../../../app/engine/sortCards');
+const setHighest = require('./../../../../app/engine/setHighest')
 
 describe('Game addplayer method', function () {
     it('Takes player name(session) and socket-id and add it to players list as an object', function () {
@@ -56,12 +56,7 @@ describe('Game set Hakem', function () {
     })
 });
 
-describe('SortCards', function () {
-    it('should take an array of cards as argument and return the highest card', function () {
-        var array = [[10, "khaj"], [6, "khaj"], [12, "khaj"]];
-        expect(sortCards(array)).to.be.eql([12, "khaj"]);
-    })
-});
+
 describe('setWinnerOfBazi', function () {
     it('should take deck of cards an increment wonBazi of winner team in deck;', function () {
         var object = new game();

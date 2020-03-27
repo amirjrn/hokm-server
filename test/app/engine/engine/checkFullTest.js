@@ -1,4 +1,4 @@
-const checkFull = require('../../../../app/engine/checkFull');
+const checkFull = require('./../../../../app/engine/checkFull');
 const expect = require('chai').expect;
 
 describe('checkfull', function () {
