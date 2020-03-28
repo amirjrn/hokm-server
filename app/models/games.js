@@ -20,9 +20,13 @@ function listOfGames() {
     ));
     return gameList;
 }
-exports = {
+function findGame(name) {
+    return games.find(game => game.nameOfGame === name)
+}
+module.exports = {
     games,
     addGame,
     removeGame,
-    listOfGames
+    listOfGames,
+    findGame
 }
