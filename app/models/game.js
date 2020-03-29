@@ -23,9 +23,9 @@ class Game {
         this.status = "waiting for players";
         this.fullness = false;
     }
-    addPlayer(socket, name) {
+    addPlayer(socket, name, io, done) {
         if (checkFull(this.players_connected) && this.status === "Game Started") {
-            throw new Error('Whoops!')
+            return done('Game is full')
         }
         else if (!checkFull(this.players_connected) && this.status === "Game Started") {
             this.addDisconnectedPlayer(socket, name);
@@ -37,8 +37,9 @@ class Game {
             this.players.push({ name, socket_id: socket })
             this.players_connected++;
             if (this.players_connected === 4) {
-                this.startGame();
+                this.startGame(io);
             }
+            done(null, "ok")
         }
     }
     removePlayer(socket) {
@@ -60,8 +61,9 @@ class Game {
             }
         }
     }
-    startGame() {
-        this.setHakem();
+    startGame(io) {
+        this.setHakem(null, io);
+        this.shuffled_cards = new Cards();
         this.shuffled_cards.shuffle();
         this.spreadCards();
         this.status = "Game Started";
@@ -72,10 +74,10 @@ class Game {
     continueGame() {
         this.status === "Game Started"
     }
-    setHakem(winnerTeam) {
+    setHakem(winnerTeam, io) {
         if (this.hakem === undefined) {
             this.shuffled_cards.shuffle();
-            this.hakemIndex = findFirstَََAce(this.shuffled_cards);
+            this.hakemIndex = findFirstَََAce(this.shuffled_cards, this.players, io);
             this.hakem = this.players[this.hakemIndex];
             console.log(this.hakemIndex)
         }
@@ -85,6 +87,11 @@ class Game {
             }
         }
         this.setPlayerTurn(this.hakem);
+    }
+    hokm(suit, name) {
+        if (this.hakem.name === name) {
+            this.currentHokm = suit;
+        }
     }
     //There are three situations where players turn changes : 
     // 1-hakem is set : always hakem is the player to play;

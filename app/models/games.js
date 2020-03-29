@@ -2,8 +2,15 @@ const Game = require('./game');
 
 var games = [];
 
-function addGame(name) {
-    games.push(new Game(name));
+function addGame(name, done) {
+    if (games.some(game => game.nameOfGame === name)) {
+        done('room alreay created')
+    }
+    else {
+        games.push(new Game(name));
+        done(null, name + "created")
+    }
+
 }
 function removeGame(name) {
     delete games[name];

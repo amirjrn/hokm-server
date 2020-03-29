@@ -1,4 +1,4 @@
-const game = require('./../../../app/models/game').Game;
+const game = require('./../../../app/models/game');
 const expect = require('chai').expect;
 const sinon = require('sinon');
 const Cards = require('./../../../app/models/cards');
