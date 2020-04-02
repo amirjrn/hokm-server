@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "watch": false,
+        "module": "CommonJS",
+        "types": [
+            "node"
+        ],
+        "lib": [
+            "ES2020"
+        ]
+        // "types": [
+        //     "node"
+        // ],
+        // "lib": [
+        //     "ESNext"
+        // ]
+    }
+}
