@@ -3,7 +3,7 @@ const findFirstَََAce = require('../engine/findFirstace');
 const setHighest = require('../engine/setHighest');
 const checkFull = require('../engine/checkFull');
 const moveCard = require('../engine/moveCard');
-const turn = require('./../engine/spreadTurn')
+const turn = require('../engine/spreadTurn')
 class Game {
     constructor(name) {
         this.nameOfGame = name;
