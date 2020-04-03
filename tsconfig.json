@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "ESNext",
-        "watch": false,
+        "watch": true,
         "module": "CommonJS",
         "types": [
             "node"
