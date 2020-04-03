@@ -186,16 +186,16 @@ class Game {
         console.log(player.cards)
     }
     setWinnerOfBazi() {
-        var highest = setHighest(this.deck, this.hokm, this.currentCard);
+        var highest = setHighest(this.deck, this.currentHokm, this.currentCard);
         var winnerPlayer = highest[2];
+        var winnerTeam = this.teams.find(team => team.players.find(player => player.name === winnerPlayer));
         var winnnerPlayerIndex = this.players.map(e => e.name).indexOf(winnerPlayer);
-        this.setPlayerTurn(winnnerPlayerIndex);
-        var winnerTeam = this.teams.find(team => team.players.find(player => player.name === highest[2]));
         winnerTeam.won_bazi++;
+        this.setPlayerTurn(winnnerPlayerIndex);
+        this.finishBazi();
         if (winnerTeam.won_bazi === 7) {
             this.setWinnerOfDast(winnerTeam);
         }
-        this.finishBazi();
         return highest[2];
     }
     setWinnerOfDast(winnerTeam) {
