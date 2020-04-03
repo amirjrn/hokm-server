@@ -129,21 +129,31 @@ class Game {
     }
     orderPlayers() {
     }
+    finishBazi() {
+        this.currentCard = null;
+        this.deck = [];
+    }
     playCard(card, name, done) {
         var player = this.players.find(player => player.name === name);
-        if (this.playerTurn === name) {
+        console.log(player.cards.length);
+        if (!player) {
+            return done("you can not send card to this room ");
+        }
+        if (this.players[this.playerTurn].name !== name) {
             return done("it is not your turn");
         }
-        if (!player.cards.includes(card)) {
+        if (!player.cards.find(playerCard => playerCard[0] === card[0] && playerCard[1] === card[1])) {
             return done("you don't have this card");
         }
-        if (card[1] === this.currentCard || card[1] === this.currentHokm && this.deck.length === 3) {
+        if (this.currentCard && card[1] !== this.currentCard && card[1] !== this.currentHokm) {
+            return done("please play hokm or current card");
+        }
+        if (this.deck.length === 3) {
             moveCard_1.moveCard(this, card, player);
             var winner_of_bazi = this.setWinnerOfBazi();
-            this.currentCard = null;
             done(null, "ok", winner_of_bazi);
         }
-        else if (card[1] === this.currentCard || card[1] === this.currentHokm) {
+        else if (this.currentCard) {
             moveCard_1.moveCard(this, card, player);
             this.setPlayerTurn();
             done(null, "ok");
@@ -154,19 +164,20 @@ class Game {
             this.currentCard = card[1];
             done(null, "ok");
         }
-        else {
-            done("please play current card or hokm");
-        }
+        console.log(player.cards.length);
+        console.log(player.cards);
     }
     setWinnerOfBazi() {
         var highest = setHighest_1.setHighest(this.deck, this.hokm, this.currentCard);
         var winnerPlayer = highest[2];
-        this.setPlayerTurn(winnerPlayer);
+        var winnnerPlayerIndex = this.players.map(e => e.name).indexOf(winnerPlayer);
+        this.setPlayerTurn(winnnerPlayerIndex);
         var winnerTeam = this.teams.find(team => team.players.find(player => player.name === highest[2]));
         winnerTeam.won_bazi++;
         if (winnerTeam.won_bazi === 7) {
             this.setWinnerOfDast(winnerTeam);
         }
+        this.finishBazi();
         return highest[2];
     }
     setWinnerOfDast(winnerTeam) {

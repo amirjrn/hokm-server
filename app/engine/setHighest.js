@@ -6,7 +6,9 @@ function setHighest(deck, hokm, currentCard) {
     var filteredDeck = deck.filter((card) => card[1] === currentCard);
     //filter cards which theirs suit is equal to hokm;
     var hokmsInDeck = deck.filter((card) => card[1] === hokm);
+    console.log(hokmsInDeck);
     var Deck = hokmsInDeck.length !== 0 ? sortCards_1.sortCards(hokmsInDeck, false) : sortCards_1.sortCards(filteredDeck, false);
+    console.log(Deck);
     return Deck[0];
 }
 exports.setHighest = setHighest;

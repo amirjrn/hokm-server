@@ -27,8 +27,16 @@ function listOfGames() {
     ));
     return gameList;
 }
-function findGame(name) {
-    return games.find(game => game.nameOfGame === name)
+function findGame(name: string, done: Function) {
+    var game = games.find(game => game.nameOfGame === name);
+    if (game) {
+        done(null, game);
+
+
+    }
+    else {
+        done("Game did Not Found");
+    }
 }
 export {
     games,
