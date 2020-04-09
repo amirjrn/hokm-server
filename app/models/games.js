@@ -18,14 +18,7 @@ function removeGame(name) {
 }
 exports.removeGame = removeGame;
 function listOfGames() {
-    if (games.length === 0) {
-        return "No Game to play. try to add new game";
-    }
-    var gameList = games.map(game => ({
-        name: game.nameOfGame,
-        numberOfPlayer: game.numberOfPlayer
-    }));
-    return gameList;
+    return games.map(game => game.nameOfGame);
 }
 exports.listOfGames = listOfGames;
 function findGame(name, done) {

@@ -1,21 +1,35 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const games_js_1 = require("../models/games.js");
-const games_js_2 = require("../models/games.js");
+const palyers_1 = require("../models/palyers");
 function ioEvents(io) {
     io.on('connection', function (socket) {
+        socket.on("sendName", function (name) {
+            palyers_1.addPlayer(name, socket.id, function (err) {
+                if (err) {
+                    socket.emit('result', err);
+                }
+                else {
+                    socket.emit('result', "ok");
+                }
+            });
+        });
+        socket.on("reqListOfGames", function () {
+            socket.emit("listOfGames", games_js_1.listOfGames());
+        });
         socket.on('create-room', function (gameName) {
             games_js_1.addGame(gameName, function (err, result) {
                 if (err) {
                     socket.emit('err', 'Room name already created . Try another name');
                 }
-                else if (result === (gameName + "created")) {
+                else {
                     io.emit('new-game', gameName);
                 }
             });
         });
         socket.on('join-game', function (gameName, name) {
-            games_js_2.findGame(gameName, function (err, game_obj) {
+            console.log(gameName, name);
+            games_js_1.findGame(gameName, function (err, game_obj) {
                 if (err) {
                     socket.emit("err", err);
                 }
@@ -24,10 +38,12 @@ function ioEvents(io) {
                         if (error) {
                             socket.emit('err', error);
                         }
-                        else if (result === "ok") {
-                            game_obj.players.map(player => io.to(player.socket_id).emit('new-user', name));
+                        else {
+                            var other_players = game_obj.players.filter(player => player.socket_id !== socket.id);
+                            other_players.map(player => socket.emit("prev-players", player.name));
+                            other_players.map(player => io.to(player.socket_id).emit('new-user', name));
                         }
-                        else if (result === "start game") {
+                        if (result === "start game") {
                             game_obj.shuffled_cards.dealed_deck.map((card, i) => io.to(game_obj.players[(i % 4)].socket_id).emit("hokm-card", card));
                             game_obj.players.map(player => io.to(player.socket_id).emit("taeen-hakem", game_obj.hakem));
                             game_obj.startGame();
@@ -37,8 +53,8 @@ function ioEvents(io) {
                 }
             });
         });
-        socket.on('hokm', function (gameName, suit, name) {
-            games_js_2.findGame(gameName, function (err, game_obj) {
+        socket.on('hokm', function (suit, name, gameName) {
+            games_js_1.findGame(gameName, function (err, game_obj) {
                 if (err) {
                     socket.emit("err", err);
                 }
@@ -50,7 +66,7 @@ function ioEvents(io) {
             });
         });
         socket.on('sendcard', function (cardNumber, cardSuit, name, gameName) {
-            games_js_2.findGame(gameName, function (err, game_obj) {
+            games_js_1.findGame(gameName, function (err, game_obj) {
                 if (err) {
                     socket.emit("err", err);
                 }
@@ -61,11 +77,11 @@ function ioEvents(io) {
                             socket.emit("err", err);
                         }
                         else if (result === "ok" && !winner) {
-                            game_obj.players.map(player => io.to(player.socket_id).emit('card_played', card));
+                            game_obj.players.map(player => io.to(player.socket_id).emit('card-played', card));
                         }
                         else if (result === "ok" && winner) {
-                            game_obj.players.map(player => io.to(player.socket_id).emit('card_played', card));
-                            game_obj.players.map(player => io.to(player.socket_id).emit('winner_bazi', winner));
+                            game_obj.players.map(player => io.to(player.socket_id).emit('card-played', card));
+                            game_obj.players.map(player => io.to(player.socket_id).emit('winner-bazi', winner));
                         }
                         io.to(game_obj.players[game_obj.playerTurn].socket_id).emit("your_turn", true);
                     });
@@ -73,12 +89,7 @@ function ioEvents(io) {
             });
         });
         //add dissconnection event listener to every socket connected 
-        socket.on('disconnect', function (socket) {
-            // console.log("`${socket.id}` disconected");
-            // var game_playing_object = Object.keys(games.games).find(game => game.players.hasOwnproperty(socket.id));
-            // var game_playing_name = game_playing_name[nameOfGame];
-            // io.to(game_playing_name).broadcast.emit('user-disconnected', game_playing_object[socket.id]);
-            // games.games[]
+        socket.on('disconnect', function () {
         });
     });
 }

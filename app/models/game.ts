@@ -118,8 +118,11 @@ class Game {
         // Every time hakem is changed , it's hakem turn to play.
         this.setPlayerTurn(this.hakemIndex);
     }
-    hokm(suit, name) {
-        if (this.hakem === name) {
+    hokm(suit, name, done) {
+        if (this.hakem !== name) {
+            done("you are not hakem")
+        }
+        else {
             this.currentHokm = suit;
         }
     }
