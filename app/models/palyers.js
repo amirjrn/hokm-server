@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Player_1 = require("./Player");
+const Player_1 = require('./Player');
 var players = [];
 function addPlayer(name, socket_id, done) {
     if (players.some(player => player.name === name)) {
