@@ -22,20 +22,20 @@ class Game {
         this.status = "waiting for players";
         this.fullness = false;
     }
-    addPlayer(socket, name, done) {
+    addPlayer(socket_id, name, done) {
         if (checkFull_1.checkFull(this.players_connected) && this.status === "Game Started") {
             if (done !== undefined) {
                 return done('Game is full');
             }
         }
         else if (!checkFull_1.checkFull(this.players_connected) && this.status === "Game Started") {
-            this.addDisconnectedPlayer(socket, name);
+            this.addDisconnectedPlayer(socket_id, name);
             if (this.players_connected === 4) {
                 this.continueGame();
             }
         }
         else {
-            this.players.push({ name, socket_id: socket });
+            this.players.push({ name, socket_id: socket_id });
             this.players_connected++;
             if (this.players_connected === 4) {
                 this.setTeams();
@@ -53,8 +53,8 @@ class Game {
     }
     setTeams() {
         this.teams = [
-            { players: [this.players[0], this.players[2]], won_dast: 0, won_bazi: 0 },
-            { players: [this.players[1], this.players[3]], won_dast: 0, won_bazi: 0 }
+            { players: [this.players[0].name, this.players[2].name], won_dast: 0, won_bazi: 0 },
+            { players: [this.players[1].name, this.players[3].name], won_dast: 0, won_bazi: 0 }
         ];
     }
     removePlayer(socket) {
@@ -104,9 +104,14 @@ class Game {
         // Every time hakem is changed , it's hakem turn to play.
         this.setPlayerTurn(this.hakemIndex);
     }
-    hokm(suit, name) {
-        if (this.hakem === name) {
+    hokm(suit, name, done) {
+        if (this.hakem !== name) {
+            done("you are not hakem");
+        }
+        else {
             this.currentHokm = suit;
+            console.log("here bitch");
+            done(null);
         }
     }
     //There are three situations where players turn changes : 
@@ -170,7 +175,7 @@ class Game {
     setWinnerOfBazi() {
         var highest = setHighest_1.setHighest(this.deck, this.currentHokm, this.currentCard);
         var winnerPlayer = highest[2];
-        var winnerTeam = this.teams.find(team => team.players.find(player => player.name === winnerPlayer));
+        var winnerTeam = this.teams.find(team => team.players.find(player => player === winnerPlayer));
         var winnnerPlayerIndex = this.players.map(e => e.name).indexOf(winnerPlayer);
         winnerTeam.won_bazi++;
         this.setPlayerTurn(winnnerPlayerIndex);
@@ -181,7 +186,7 @@ class Game {
         return highest[2];
     }
     setWinnerOfDast(winnerTeam) {
-        this.teams.forEach((team) => team.won_bazi = 0);
+        this.teams = this.teams.map((team) => team.won_bazi = 0);
         winnerTeam.won_dast++;
         if (winnerTeam.won_dast === 7) {
             this.setWinnerOfGame(winnerTeam);

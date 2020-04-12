@@ -40,6 +40,7 @@ function ioEvents(io) {
                         }
                         else {
                             var other_players = game_obj.players.filter(player => player.socket_id !== socket.id);
+                            console.log(other_players);
                             other_players.map(player => socket.emit("prev-players", player.name));
                             other_players.map(player => io.to(player.socket_id).emit('new-user', name));
                         }
@@ -47,7 +48,10 @@ function ioEvents(io) {
                             game_obj.shuffled_cards.dealed_deck.map((card, i) => io.to(game_obj.players[(i % 4)].socket_id).emit("hokm-card", card));
                             game_obj.players.map(player => io.to(player.socket_id).emit("taeen-hakem", game_obj.hakem));
                             game_obj.startGame();
-                            game_obj.players.map(player => io.to(player.socket_id).emit("cards", player.cards));
+                            game_obj.players.map(player => io.to(player.socket_id).emit("teams", game_obj.teams));
+                            setTimeout(() => {
+                                game_obj.players.map(player => io.to(player.socket_id).emit("cards", player.cards));
+                            }, 2000);
                         }
                     });
                 }
@@ -59,9 +63,15 @@ function ioEvents(io) {
                     socket.emit("err", err);
                 }
                 else {
-                    game_obj.hokm(suit, name);
-                    game_obj.players.map(player => io.to(player.socket_id).emit('hokm', game_obj.currentHokm));
-                    io.to(game_obj.players[game_obj.playerTurn].socket_id).emit('your_turn', true);
+                    game_obj.hokm(suit, name, function (err) {
+                        if (err) {
+                            socket.emit("err", err);
+                        }
+                        else {
+                            game_obj.players.map(player => io.to(player.socket_id).emit('hokm', game_obj.currentHokm));
+                            io.to(game_obj.players[game_obj.playerTurn].socket_id).emit('your_turn', true);
+                        }
+                    });
                 }
             });
         });
@@ -76,20 +86,24 @@ function ioEvents(io) {
                         if (err) {
                             socket.emit("err", err);
                         }
-                        else if (result === "ok" && !winner) {
-                            game_obj.players.map(player => io.to(player.socket_id).emit('card-played', card));
+                        else {
+                            socket.emit("your_turn", false);
+                            socket.emit("remove-card", card);
+                            io.to(game_obj.players[game_obj.playerTurn].socket_id).emit("your_turn", true);
                         }
-                        else if (result === "ok" && winner) {
-                            game_obj.players.map(player => io.to(player.socket_id).emit('card-played', card));
+                        if (!err && result === "ok") {
+                            game_obj.players.map(player => io.to(player.socket_id).emit('card-played', card, name));
+                        }
+                        if (!err && result === "ok" && winner) {
                             game_obj.players.map(player => io.to(player.socket_id).emit('winner-bazi', winner));
                         }
-                        io.to(game_obj.players[game_obj.playerTurn].socket_id).emit("your_turn", true);
                     });
                 }
             });
         });
         //add dissconnection event listener to every socket connected 
         socket.on('disconnect', function () {
+            palyers_1.removePlayer(socket.id);
         });
     });
 }
