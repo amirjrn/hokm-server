@@ -1,4 +1,4 @@
-import { Player } from "./Player";
+import { Player } from "./player";
 var players = [];
 
 function addPlayer(name: string, socket_id: string, done: Function) {
