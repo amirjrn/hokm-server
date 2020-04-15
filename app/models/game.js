@@ -81,6 +81,7 @@ class Game {
         this.setHakem(null);
         this.shuffled_cards = new cards_1.Deck();
         this.shuffled_cards.shuffle();
+        console.log(this.shuffled_cards);
         this.spreadCards();
         this.status = "Game Started";
     }
@@ -94,6 +95,7 @@ class Game {
         // if it is the first game , the game has no winner so hakem should be set randomly.
         if (this.hakem === undefined) {
             this.shuffled_cards.shuffle();
+            console.log(this.shuffled_cards);
             this.hakemIndex = findFirstace_1.findFirstَََAce(this.shuffled_cards);
             this.hakem = this.players[this.hakemIndex].name;
         }
@@ -129,10 +131,10 @@ class Game {
         }
     }
     spreadCards() {
-        this.players[spreadTurn_1.turn(this.hakemIndex, 0)].cards = this.shuffled_cards.deck.slice(0, 13);
-        this.players[spreadTurn_1.turn(this.hakemIndex, 1)].cards = this.shuffled_cards.deck.slice(13, 26);
-        this.players[spreadTurn_1.turn(this.hakemIndex, 2)].cards = this.shuffled_cards.deck.slice(26, 39);
-        this.players[spreadTurn_1.turn(this.hakemIndex, 3)].cards = this.shuffled_cards.deck.slice(39, 52);
+        this.players[spreadTurn_1.turn(this.hakemIndex, 0)].cards = this.shuffled_cards.shuffled_deck.slice(0, 13);
+        this.players[spreadTurn_1.turn(this.hakemIndex, 1)].cards = this.shuffled_cards.shuffled_deck.slice(13, 26);
+        this.players[spreadTurn_1.turn(this.hakemIndex, 2)].cards = this.shuffled_cards.shuffled_deck.slice(26, 39);
+        this.players[spreadTurn_1.turn(this.hakemIndex, 3)].cards = this.shuffled_cards.shuffled_deck.slice(39, 52);
     }
     orderPlayers() {
     }
