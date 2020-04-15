@@ -16,6 +16,8 @@
     "@babel/preset-typescript": "^7.9.0",
     "@types/node": "^13.11.0",
     "@types/uuid": "^7.0.2",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-private-methods": "^7.8.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "nodemon": "^2.0.1",
