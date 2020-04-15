@@ -1,11 +1,8 @@
 const game = require('./../../../app/models/game');
 const expect = require('chai').expect;
 const sinon = require('sinon');
-const Cards = require('./../../../app/models/cards');
-const checkFull = require('./../../../app/engine/checkFull');
-const sortCards = require('./../../../app/engine/sortCards');
 const setHighest = require('./../../../app/engine/setHighest')
-
+const shuffle = require('./../../../app/engine/shuffle');
 describe('Game addplayer method', function () {
     it('Takes player name(session) and socket-id and add it to players list as an object', function () {
         var object = new game();
@@ -45,24 +42,29 @@ describe('Game addDisconnectedplayer method', function () {
 
 describe('Game shuffle cards', function () {
     it('should instantiate cards object and shuffle it and assign it to game shuffled_cards property', function () {
-        var object = new game();
-        expect(object.shuffled_cards.deal()).to.be.eql([13, "khesht"]);
+
     })
 });
+
 describe('Game set Hakem', function () {
-    it('should set hakem based on the dealed card', function () {
-
-    })
-});
-describe('Game set hokm', function () {
-    it('should set hakem based on the dealed card', function () {
+    it('should set hakem based on the dealed card when hakem is not defined and game has not previous winner', function () {
         var object = new game();
-        object.hakem = "ali";
-        object.hokm("khaj", "ali");
-        expect(object.currentHokm).to.be.equal("khaj");
+        object.addPlayer(null, "amir")
+        object.addPlayer(null, "ali")
+        object.addPlayer(null, "erfan")
+        object.addPlayer(null, "narges")
+        object.hakem = undefined;
+        var stub = sinon.stub(shuffle, "shuffle");
+        stub.onCall(0).returns([[13, "del"], [11, "pik"], [2, "khesht"]]);
+        object.setHakem();
+        expect(object.hakem).to.be.equal("erfan");
+        stub.onCall(1).returns([[11, "del"], [13, "pik"], [2, "khesht"]]);
+        object.hakem = undefined;
+        object.setHakem();
+        expect(object.hakem).to.be.equal("ali")
+        stub.restore();
     })
 });
-
 describe('setWinnerOfBazi', function () {
     it('should take deck of cards an increment wonBazi of winner team in deck;', function () {
         var object = new game();
@@ -76,9 +78,31 @@ describe('setWinnerOfBazi', function () {
         object.setWinnerOfBazi();
         expect(object.teams[0].won_bazi).to.be.equal(1);
         object.setWinnerOfBazi();
-        expect(object.teams[0].won_bazi).to.be.equal(1);
+        expect(object.teams[1].won_bazi).to.be.equal(1);
     })
 });
+describe('Game set hokm', function () {
+    it('should set hakem based on the dealed card', function () {
+        var object = new game();
+        object.hakem = "ali";
+        object.hokm("khaj", "ali", function (err) {
+            expect(err).to.be.null;
+        });
+        expect(object.currentHokm).to.be.equal("khaj");
+    })
+});
+describe('Game set hokm', function () {
+    it('should return error if hakem name is not equal to hokm emitter name', function () {
+        var object = new game();
+        object.hakem = "ali";
+        object.hokm("khaj", "amir", function (err) {
+            expect(err).to.not.be.null;
+        });
+        expect(object.currentHokm).to.not.be.equal("khaj");
+    })
+});
+
+
 describe('setWinnerOfDast', function () {
     it('should take the team which has won 7 sets of bazi and make it the winner of dast', function () {
         var object = new game();

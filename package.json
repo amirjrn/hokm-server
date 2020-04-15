@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node index.js",
-    "test": "mocha --recursive"
+    "test": "mocha --recursive --watch"
   },
   "author": "",
   "license": "ISC",

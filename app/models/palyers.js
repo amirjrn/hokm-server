@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Player_1 = require('./player');
+const player_1 = require("./player");
 var players = [];
 function addPlayer(name, socket_id, done) {
     if (players.some(player => player.name === name)) {
         done('name taken');
     }
     else {
-        players.push(new Player_1.Player(name, socket_id));
+        players.push(new player_1.Player(name, socket_id));
         done(null);
     }
 }
