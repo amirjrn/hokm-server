@@ -152,8 +152,8 @@ class Game {
         if (!player.cards.find(playerCard => playerCard[0] === card[0] && playerCard[1] === card[1])) {
             return done("you don't have this card");
         }
-        if (this.currentCard && card[1] !== this.currentCard && card[1] !== this.currentHokm) {
-            return done("please play hokm or current card");
+        if (this.currentCard && player.cards.find(playerCard => playerCard[1] === this.currentCard[1]) && this.currentCard[1] !== card[1]) {
+            return done("please play current card");
         }
         if (this.deck.length === 3) {
             moveCard_1.moveCard(this, card, player);
@@ -171,8 +171,6 @@ class Game {
             this.currentCard = card[1];
             done(null, "ok");
         }
-        console.log(player.cards.length);
-        console.log(player.cards);
     }
     setWinnerOfBazi() {
         var highest = setHighest_1.setHighest(this.deck, this.currentHokm, this.currentCard);
