@@ -144,9 +144,9 @@ class Game {
     }
     playCard(card, name, done) {
         var player = this.players.find(player => player.name === name);
-        console.log(player.cards.length);
+        console.log(player);
         if (!player) {
-            return done("you can not send card to this room ");
+            return done("you can not send card to this room");
         }
         if (this.players[this.playerTurn].name !== name) {
             return done("it is not your turn");
@@ -154,7 +154,7 @@ class Game {
         if (!player.cards.find(playerCard => playerCard[0] === card[0] && playerCard[1] === card[1])) {
             return done("you don't have this card");
         }
-        if (this.currentCard && player.cards.find(playerCard => playerCard[1] === this.currentCard[1]) && this.currentCard[1] !== card[1]) {
+        if (this.currentCard && player.cards.find(playerCard => playerCard[1] === this.currentCard) && this.currentCard !== card[1]) {
             return done("please play current card");
         }
         if (this.deck.length === 3) {

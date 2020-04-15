@@ -111,3 +111,15 @@ describe('setWinnerOfDast', function () {
         expect(object_winner_team.won_dast).to.be.equal(1);
     })
 });
+
+describe('Play Card', function () {
+    it('should return error if player has a currentCard suit and plays an other suit', function () {
+        var object = new Game();
+        object.currentCard = 'del'
+        object.playerTurn = 0;
+        object.players[0] = { name: "amir", cards: [[3, 'del'], [4, 'pik']] }
+        object.playCard([4, 'pik'], "amir", function (err) {
+            expect(err).to.not.be.null;
+        })
+    })
+});
