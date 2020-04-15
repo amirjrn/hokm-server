@@ -25,30 +25,19 @@ class Game {
     #players_connected;
     addPlayer(socket_id, name, done) {
         if (checkFull_1.checkFull(this.#players_connected) && this.status === "Game Started") {
-            if (done !== undefined) {
-                return done('Game is full');
-            }
+            return done('Game is full');
         }
-        else if (!checkFull_1.checkFull(this.#players_connected) && this.status === "Game Started") {
-            this.addDisconnectedPlayer(socket_id, name);
-            if (this.#players_connected === 4) {
-                this.continueGame();
-            }
+        if (!checkFull_1.checkFull(this.#players_connected) && this.status === "Game Started") {
+            return this.addDisconnectedPlayer(socket_id, name);
+        }
+        this.players.push({ name, socket_id: socket_id });
+        this.#players_connected++;
+        if (this.#players_connected === 4) {
+            this.startGame();
+            done(null, "start game");
         }
         else {
-            this.players.push({ name, socket_id: socket_id });
-            this.#players_connected++;
-            if (this.#players_connected === 4) {
-                this.startGame();
-                if (done !== undefined) {
-                    done(null, "start game");
-                }
-            }
-            else {
-                if (done !== undefined) {
-                    done(null, "ok");
-                }
-            }
+            done(null, "ok");
         }
     }
     setTeams() {
@@ -74,6 +63,9 @@ class Game {
                     return;
                 }
             }
+        }
+        if (this.#players_connected === 4) {
+            this.continueGame();
         }
     }
     startGame() {

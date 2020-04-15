@@ -49,10 +49,10 @@ describe('Game shuffle cards', function () {
 describe('Game set Hakem', function () {
     it('should set hakem based on the dealed card when hakem is not defined and game has not previous winner', function () {
         var object = new Game();
-        object.addPlayer(null, "amir")
-        object.addPlayer(null, "ali")
-        object.addPlayer(null, "erfan")
-        object.addPlayer(null, "narges")
+        object.addPlayer(null, "amir", function () { })
+        object.addPlayer(null, "ali", function () { })
+        object.addPlayer(null, "erfan", function () { })
+        object.addPlayer(null, "narges", function () { })
         object.hakem = undefined;
         var stub = sinon.stub(shuffle, "shuffle");
         stub.onCall(0).returns([[13, "del"], [11, "pik"], [2, "khesht"]]);
@@ -68,10 +68,10 @@ describe('Game set Hakem', function () {
 describe('setWinnerOfBazi', function () {
     it('should take deck of cards an increment wonBazi of winner team in deck;', function () {
         var object = new Game();
-        object.addPlayer(null, "amir")
-        object.addPlayer(null, "ali")
-        object.addPlayer(null, "erfan")
-        object.addPlayer(null, "narges")
+        object.addPlayer(null, "amir", function () { })
+        object.addPlayer(null, "ali", function () { })
+        object.addPlayer(null, "erfan", function () { })
+        object.addPlayer(null, "narges", function () { })
         var stub = sinon.stub(setHighest, "setHighest");
         stub.onCall(0).returns([12, "khaj", "amir"]);
         stub.onCall(1).returns([11, "khaj", "ali"]);
