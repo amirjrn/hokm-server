@@ -144,7 +144,6 @@ class Game {
     }
     playCard(card, name, done) {
         var player = this.players.find(player => player.name === name);
-        console.log(player);
         if (!player) {
             return done("you can not send card to this room");
         }
@@ -157,21 +156,21 @@ class Game {
         if (this.currentCard && player.cards.find(playerCard => playerCard[1] === this.currentCard) && this.currentCard !== card[1]) {
             return done("please play current card");
         }
-        if (this.deck.length === 3) {
-            moveCard_1.moveCard(this, card, player);
-            var winner_of_bazi = this.setWinnerOfBazi();
-            done(null, "ok", winner_of_bazi);
+        this.moveCard(card, player, function (winner) {
+            done(null, "ok", winner ? winner : null);
+        });
+    }
+    moveCard(card, player, setwinner) {
+        moveCard_1.moveCard(this, card, player);
+        if (this.deck.length === 4) {
+            return setwinner(this.setWinnerOfBazi());
         }
-        else if (this.currentCard) {
-            moveCard_1.moveCard(this, card, player);
-            this.setPlayerTurn();
-            done(null, "ok");
+        if (this.currentCard) {
+            return this.setPlayerTurn();
         }
-        else if (!this.currentCard) {
-            moveCard_1.moveCard(this, card, player);
+        if (!this.currentCard) {
             this.setPlayerTurn();
             this.currentCard = card[1];
-            done(null, "ok");
         }
     }
     setWinnerOfBazi() {
