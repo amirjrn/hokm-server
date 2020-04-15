@@ -11,7 +11,7 @@ class Game {
         this.nameOfGame = name;
         this.shuffled_cards = new cards_1.Deck();
         this.deck = [];
-        this.players_connected = 0;
+        this.#players_connected = 0;
         this.hakem;
         this.hakemIndex;
         this.currentHokm;
@@ -22,24 +22,24 @@ class Game {
         this.status = "waiting for players";
         this.fullness = false;
     }
+    #players_connected;
     addPlayer(socket_id, name, done) {
-        if (checkFull_1.checkFull(this.players_connected) && this.status === "Game Started") {
+        if (checkFull_1.checkFull(this.#players_connected) && this.status === "Game Started") {
             if (done !== undefined) {
                 return done('Game is full');
             }
         }
-        else if (!checkFull_1.checkFull(this.players_connected) && this.status === "Game Started") {
+        else if (!checkFull_1.checkFull(this.#players_connected) && this.status === "Game Started") {
             this.addDisconnectedPlayer(socket_id, name);
-            if (this.players_connected === 4) {
+            if (this.#players_connected === 4) {
                 this.continueGame();
             }
         }
         else {
             this.players.push({ name, socket_id: socket_id });
-            this.players_connected++;
-            if (this.players_connected === 4) {
-                this.setTeams();
-                this.setHakem(null);
+            this.#players_connected++;
+            if (this.#players_connected === 4) {
+                this.startGame();
                 if (done !== undefined) {
                     done(null, "start game");
                 }
@@ -70,13 +70,15 @@ class Game {
             if (player.hasOwnProperty('socket_id') && player.socket_id === null) {
                 if (player.name === name) {
                     player.socket_id = socket.socket_id;
-                    this.players_connected++;
+                    this.#players_connected++;
                     return;
                 }
             }
         }
     }
     startGame() {
+        this.setTeams();
+        this.setHakem(null);
         this.shuffled_cards = new cards_1.Deck();
         this.shuffled_cards.shuffle();
         this.spreadCards();
@@ -195,4 +197,4 @@ class Game {
     setWinnerOfGame(winnerTeam) {
     }
 }
-module.exports = Game;
+exports.Game = Game;

@@ -1,11 +1,11 @@
-const game = require('./../../../app/models/game');
+const Game = require('./../../../app/models/game').Game;
 const expect = require('chai').expect;
 const sinon = require('sinon');
 const setHighest = require('./../../../app/engine/setHighest')
 const shuffle = require('./../../../app/engine/shuffle');
 describe('Game addplayer method', function () {
     it('Takes player name(session) and socket-id and add it to players list as an object', function () {
-        var object = new game();
+        var object = new Game();
         object.addPlayer(12, 'ali', function (err, result) {
             expect(err).to.be.null;
         });
@@ -15,7 +15,7 @@ describe('Game addplayer method', function () {
 });
 describe('Game addplayer method', function () {
     it('Takes player name(session) and socket-id and throw error if connected players are equal to four ', function () {
-        var object = new game();
+        var object = new Game();
         object.players_connected = 4;
         object.status = "Game Started";
         object.addPlayer(12, 'reza', function (err, result) {
@@ -25,7 +25,7 @@ describe('Game addplayer method', function () {
 });
 describe('Game addDisconnectedplayer method', function () {
     it('Takes player name(session) and socket-id and add socket id to the array item if finds passed name in it', function () {
-        var object = new game();
+        var object = new Game();
         object.players = [{ socket_id: null, name: 'amir' }];
         object.addDisconnectedPlayer({ socket_id: 12 }, 'amir')
         expect(object.players).to.be.eql([{ socket_id: 12, name: 'amir' }]);
@@ -33,7 +33,7 @@ describe('Game addDisconnectedplayer method', function () {
 });
 describe('Game addDisconnectedplayer method', function () {
     it('Takes player name(session) and socket-id and countinue if item has already a socket id assigned', function () {
-        var object = new game();
+        var object = new Game();
         object.players = [{ socket_id: 12, name: 'ali' }];
         object.addDisconnectedPlayer({ socket_id: 4 }, 'ali')
         expect(object.players).to.be.eql([{ socket_id: 12, name: 'ali' }]);
@@ -48,7 +48,7 @@ describe('Game shuffle cards', function () {
 
 describe('Game set Hakem', function () {
     it('should set hakem based on the dealed card when hakem is not defined and game has not previous winner', function () {
-        var object = new game();
+        var object = new Game();
         object.addPlayer(null, "amir")
         object.addPlayer(null, "ali")
         object.addPlayer(null, "erfan")
@@ -67,7 +67,7 @@ describe('Game set Hakem', function () {
 });
 describe('setWinnerOfBazi', function () {
     it('should take deck of cards an increment wonBazi of winner team in deck;', function () {
-        var object = new game();
+        var object = new Game();
         object.addPlayer(null, "amir")
         object.addPlayer(null, "ali")
         object.addPlayer(null, "erfan")
@@ -83,7 +83,7 @@ describe('setWinnerOfBazi', function () {
 });
 describe('Game set hokm', function () {
     it('should set hakem based on the dealed card', function () {
-        var object = new game();
+        var object = new Game();
         object.hakem = "ali";
         object.hokm("khaj", "ali", function (err) {
             expect(err).to.be.null;
@@ -93,7 +93,7 @@ describe('Game set hokm', function () {
 });
 describe('Game set hokm', function () {
     it('should return error if hakem name is not equal to hokm emitter name', function () {
-        var object = new game();
+        var object = new Game();
         object.hakem = "ali";
         object.hokm("khaj", "amir", function (err) {
             expect(err).to.not.be.null;
@@ -105,7 +105,7 @@ describe('Game set hokm', function () {
 
 describe('setWinnerOfDast', function () {
     it('should take the team which has won 7 sets of bazi and make it the winner of dast', function () {
-        var object = new game();
+        var object = new Game();
         var object_winner_team = { won_bazi: 7, won_dast: 0 };
         object.setWinnerOfDast(object_winner_team);
         expect(object_winner_team.won_dast).to.be.equal(1);

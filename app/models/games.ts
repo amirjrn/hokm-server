@@ -1,6 +1,6 @@
-const Game = require('./game');
+import { Game } from './game'
 
-var games = [];
+var games: Array<Game> = [];
 
 function addGame(name: string, done: Function) {
     if (games.some(game => game.nameOfGame === name)) {

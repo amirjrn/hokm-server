@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Game = require('./game');
+const game_1 = require("./game");
 var games = [];
 exports.games = games;
 function addGame(name, done) {
@@ -8,7 +8,7 @@ function addGame(name, done) {
         done('room alreay created');
     }
     else {
-        games.push(new Game(name));
+        games.push(new game_1.Game(name));
         done(null, name + "created");
     }
 }

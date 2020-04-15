@@ -4,13 +4,12 @@ import { setHighest } from '../engine/setHighest';
 import { checkFull } from '../engine/checkFull';
 import { moveCard } from '../engine/moveCard';
 import { turn } from '../engine/spreadTurn';
-import { sortCards } from '../engine/sortCards';
 import { Player } from './player';
 class Game {
     nameOfGame: string;
     shuffled_cards: Cards;
     deck: Array<any>;
-    players_connected: number;
+    #players_connected: number;
     hakem: Player;
     hakemIndex: number;
     currentHokm: string;
@@ -24,7 +23,7 @@ class Game {
         this.nameOfGame = name;
         this.shuffled_cards = new Cards();
         this.deck = [];
-        this.players_connected = 0;
+        this.#players_connected = 0;
         this.hakem;
         this.hakemIndex;
         this.currentHokm;
@@ -36,23 +35,22 @@ class Game {
         this.fullness = false;
     }
     addPlayer(socket_id, name, done) {
-        if (checkFull(this.players_connected) && this.status === "Game Started") {
+        if (checkFull(this.#players_connected) && this.status === "Game Started") {
             if (done !== undefined) {
                 return done('Game is full')
             }
         }
-        else if (!checkFull(this.players_connected) && this.status === "Game Started") {
+        else if (!checkFull(this.#players_connected) && this.status === "Game Started") {
             this.addDisconnectedPlayer(socket_id, name);
-            if (this.players_connected === 4) {
+            if (this.#players_connected === 4) {
                 this.continueGame();
             }
         }
         else {
             this.players.push({ name, socket_id: socket_id });
-            this.players_connected++;
-            if (this.players_connected === 4) {
-                this.setTeams();
-                this.setHakem(null);
+            this.#players_connected++;
+            if (this.#players_connected === 4) {
+                this.startGame();
                 if (done !== undefined) {
                     done(null, "start game")
                 }
@@ -83,13 +81,15 @@ class Game {
             if (player.hasOwnProperty('socket_id') && player.socket_id === null) {
                 if (player.name === name) {
                     player.socket_id = socket.socket_id;
-                    this.players_connected++;
+                    this.#players_connected++;
                     return;
                 }
             }
         }
     }
     startGame() {
+        this.setTeams();
+        this.setHakem(null);
         this.shuffled_cards = new Cards();
         this.shuffled_cards.shuffle();
         this.spreadCards();
@@ -216,4 +216,4 @@ class Game {
     }
 }
 
-module.exports = Game; 
+export { Game }

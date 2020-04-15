@@ -28,7 +28,6 @@ function ioEvents(io) {
             });
         });
         socket.on('join-game', function (gameName, name) {
-            console.log(gameName, name);
             games_js_1.findGame(gameName, function (err, game_obj) {
                 if (err) {
                     socket.emit("err", err);
@@ -47,7 +46,6 @@ function ioEvents(io) {
                         if (result === "start game") {
                             game_obj.shuffled_cards.dealed_deck.map((card, i) => io.to(game_obj.players[(i % 4)].socket_id).emit("hokm-card", card));
                             game_obj.players.map(player => io.to(player.socket_id).emit("taeen-hakem", game_obj.hakem));
-                            game_obj.startGame();
                             game_obj.players.map(player => io.to(player.socket_id).emit("teams", game_obj.teams));
                             setTimeout(() => {
                                 game_obj.players.map(player => io.to(player.socket_id).emit("cards", player.cards));

@@ -1,9 +1,10 @@
 import { addGame, findGame, listOfGames } from "../models/games.js";
 import { addPlayer, removePlayer, disconnectPlayer } from "../models/palyers";
+import { Game } from './../models/game'
 function ioEvents(io) {
     io.on('connection', function (socket) {
 
-        socket.on("sendName", function (name) {
+        socket.on("sendName", function (name: string) {
             addPlayer(name, socket.id, function (err) {
                 if (err) {
                     socket.emit('result', err)
@@ -27,9 +28,8 @@ function ioEvents(io) {
             });
 
         })
-        socket.on('join-game', function (gameName, name) {
-            console.log(gameName, name);
-            findGame(gameName, function (err, game_obj) {
+        socket.on('join-game', function (gameName: string, name: string) {
+            findGame(gameName, function (err, game_obj: Game) {
                 if (err) {
                     socket.emit("err", err)
                 }
@@ -47,7 +47,6 @@ function ioEvents(io) {
                         if (result === "start game") {
                             game_obj.shuffled_cards.dealed_deck.map((card, i) => io.to(game_obj.players[(i % 4)].socket_id).emit("hokm-card", card));
                             game_obj.players.map(player => io.to(player.socket_id).emit("taeen-hakem", game_obj.hakem));
-                            game_obj.startGame();
                             game_obj.players.map(player => io.to(player.socket_id).emit("teams", game_obj.teams))
                             setTimeout(() => {
                                 game_obj.players.map(player => io.to(player.socket_id).emit("cards", player.cards));
