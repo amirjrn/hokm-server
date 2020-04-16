@@ -123,3 +123,17 @@ describe('Play Card', function () {
         })
     })
 });
+describe('Play Card', function () {
+    it('should return error if player has a currentCard suit and plays an other suit', function () {
+        var object = new Game();
+        object.currentCard = undefined;
+        object.playerTurn = 0;
+        object.players[0] = { name: "amir", cards: [[3, 'del'], [4, 'pik']] }
+        object.playCard([4, 'pik'], "amir", function (err, result) {
+            expect(err).to.be.null;
+            expect(result).to.be.equal("ok");
+            expect(object.currentCard).to.be.equal("pik")
+            expect(object.deck[0]).to.be.eql([4, "pik", "amir"])
+        })
+    })
+});
