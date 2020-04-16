@@ -81,27 +81,26 @@ function ioEvents(io) {
         socket.on('sendcard', function (cardNumber, cardSuit, name, gameName) {
             findGame(gameName, function (err, game_obj) {
                 if (err) {
-                    socket.emit("err", err);
+                    return socket.emit("err", err);
                 }
-                else {
-                    var card = [Number(cardNumber), cardSuit];
-                    game_obj.playCard(card, name, function (err, result, winner) {
-                        if (err) {
-                            socket.emit("err", err);
-                        }
-                        else {
-                            socket.emit("your_turn", false);
-                            socket.emit("remove-card", card);
-                            io.to(game_obj.players[game_obj.playerTurn].socket_id).emit("your_turn", true);
-                        }
-                        if (!err && result === "ok") {
-                            game_obj.players.map(player => io.to(player.socket_id).emit('card-played', card, name));
-                        }
-                        if (!err && result === "ok" && winner) {
-                            game_obj.players.map(player => io.to(player.socket_id).emit('winner-bazi', winner))
-                        }
-                    });
-                }
+                var card = [Number(cardNumber), cardSuit];
+                game_obj.playCard(card, name, function (err, result, winner) {
+                    if (err) {
+                        socket.emit("err", err);
+                    }
+                    else {
+                        socket.emit("your_turn", false);
+                        socket.emit("remove-card", card);
+                        io.to(game_obj.players[game_obj.playerTurn].socket_id).emit("your_turn", true);
+                    }
+                    if (!err && result === "ok") {
+                        game_obj.players.map(player => io.to(player.socket_id).emit('card-played', card, name));
+                    }
+                    if (!err && result === "ok" && winner) {
+                        game_obj.players.map(player => io.to(player.socket_id).emit('winner-bazi', winner))
+                    }
+                });
+
 
             });
 

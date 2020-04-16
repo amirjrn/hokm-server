@@ -166,7 +166,7 @@ class Game {
             return done("please play current card")
         }
         this.moveCard(card, player, function (winner) {
-            done(null, "ok", winner ? winner : null)
+            done(null, "ok", winner)
         })
     }
 
@@ -176,11 +176,13 @@ class Game {
             return setwinner(this.setWinnerOfBazi())
         }
         if (this.currentCard) {
-            return this.setPlayerTurn();
+            this.setPlayerTurn();
+            return setwinner(null)
         }
         if (!this.currentCard) {
             this.setPlayerTurn();
             this.currentCard = card[1];
+            return setwinner(null)
         }
     }
     setWinnerOfBazi() {
