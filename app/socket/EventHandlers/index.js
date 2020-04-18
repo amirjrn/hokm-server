@@ -82,7 +82,7 @@ function hokm(socket, io) {
 }
 exports.hokm = hokm;
 function sendCard(socket, io) {
-    return function (cardNumber, cardSuit, name, gameName) {
+    return function (cardNumber, cardSuit, name, gameName, callback) {
         games_js_1.findGame(gameName, function (err, game_obj) {
             if (err) {
                 return socket.emit("err", err);
@@ -90,7 +90,8 @@ function sendCard(socket, io) {
             var card = [Number(cardNumber), cardSuit];
             const result = game_obj.playCard(card, name);
             if (result instanceof Error) {
-                return socket.emit("err", result.message);
+                socket.emit("err", result.message);
+                return callback(result.message, null);
             }
             socket.emit("your_turn", false);
             socket.emit("remove-card", card);
