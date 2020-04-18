@@ -48,6 +48,7 @@ function joinGame(socket, io) {
                     if (result === "start game") {
                         game_obj.shuffled_cards.dealed_deck.map((card, i) => io.to(game_obj.players[(i % 4)].socket_id).emit("hokm-card", card));
                         game_obj.players.map(player => io.to(player.socket_id).emit("taeen-hakem", game_obj.hakem));
+                        io.to(game_obj.players[game_obj.playerTurn].socket_id).emit('your_turn', true);
                         game_obj.players.map(player => io.to(player.socket_id).emit("teams", game_obj.teams));
                         setTimeout(() => {
                             game_obj.players.map(player => io.to(player.socket_id).emit("cards", player.cards));
