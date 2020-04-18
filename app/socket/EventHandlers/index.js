@@ -101,11 +101,11 @@ function sendCard(socket, io) {
             }
             if (result && result[1]) {
                 game_obj.players.map(player => io.to(player.socket_id).emit("teams", game_obj.teams));
-                game_obj.players.map(player => io.to(player.socket_id).emit("taeen-hakem", game_obj.hakem));
+                game_obj.players.map(player => io.to(player.socket_id).emit("hokm", null));
                 setTimeout(() => {
                     game_obj.players.map(player => io.to(player.socket_id).emit("cards", player.cards));
+                    game_obj.players.map(player => io.to(player.socket_id).emit("taeen-hakem", game_obj.hakem));
                 }, 1000);
-                game_obj.players.map(player => io.to(player.socket_id).emit("hokm", null));
                 io.to(game_obj.players[game_obj.playerTurn].socket_id).emit("your_turn", true);
             }
         });
