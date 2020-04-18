@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.css": "/static/css/main.425e7d5d.chunk.css",
-    "main.js": "/static/js/main.38ac56db.chunk.js",
-    "main.js.map": "/static/js/main.38ac56db.chunk.js.map",
+    "main.css": "/static/css/main.72528caa.chunk.css",
+    "main.js": "/static/js/main.b1eff1d2.chunk.js",
+    "main.js.map": "/static/js/main.b1eff1d2.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.0d5451b6.js",
     "runtime-main.js.map": "/static/js/runtime-main.0d5451b6.js.map",
-    "static/js/2.1c156aa7.chunk.js": "/static/js/2.1c156aa7.chunk.js",
-    "static/js/2.1c156aa7.chunk.js.map": "/static/js/2.1c156aa7.chunk.js.map",
+    "static/js/2.0c761143.chunk.js": "/static/js/2.0c761143.chunk.js",
+    "static/js/2.0c761143.chunk.js.map": "/static/js/2.0c761143.chunk.js.map",
     "static/js/3.99feebdd.chunk.js": "/static/js/3.99feebdd.chunk.js",
     "static/js/3.99feebdd.chunk.js.map": "/static/js/3.99feebdd.chunk.js.map",
     "static/js/4.6a0f7272.chunk.js": "/static/js/4.6a0f7272.chunk.js",
@@ -120,10 +120,10 @@
     "static/js/58.31ede197.chunk.js": "/static/js/58.31ede197.chunk.js",
     "static/js/58.31ede197.chunk.js.map": "/static/js/58.31ede197.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.992f8025a0507c12ccfd79325310e167.js": "/precache-manifest.992f8025a0507c12ccfd79325310e167.js",
+    "precache-manifest.0b88ad5814f8847b89b4d62aaa045e20.js": "/precache-manifest.0b88ad5814f8847b89b4d62aaa045e20.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/main.425e7d5d.chunk.css.map": "/static/css/main.425e7d5d.chunk.css.map",
-    "static/js/2.1c156aa7.chunk.js.LICENSE.txt": "/static/js/2.1c156aa7.chunk.js.LICENSE.txt",
+    "static/css/main.72528caa.chunk.css.map": "/static/css/main.72528caa.chunk.css.map",
+    "static/js/2.0c761143.chunk.js.LICENSE.txt": "/static/js/2.0c761143.chunk.js.LICENSE.txt",
     "static/media/10del.png": "/static/media/10del.9be659a7.png",
     "static/media/10khaj.png": "/static/media/10khaj.d96ecf4f.png",
     "static/media/10khesht.png": "/static/media/10khesht.c936f66e.png",
@@ -180,8 +180,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.0d5451b6.js",
-    "static/js/2.1c156aa7.chunk.js",
-    "static/css/main.425e7d5d.chunk.css",
-    "static/js/main.38ac56db.chunk.js"
+    "static/js/2.0c761143.chunk.js",
+    "static/css/main.72528caa.chunk.css",
+    "static/js/main.b1eff1d2.chunk.js"
   ]
 }

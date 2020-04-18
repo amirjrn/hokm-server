@@ -1,15 +1,12 @@
 import { Player } from "./player";
 var players = [];
 
-function addPlayer(name: string, socket_id: string, done: Function) {
+function addPlayer(name: string, socket_id: string) {
     if (players.some(player => player.name === name)) {
-        done('name taken');
+        return new Error("name taken")
     }
-    else {
-        players.push(new Player(name, socket_id));
-        done(null)
-    }
-
+    players.push(new Player(name, socket_id));
+    return "ok"
 }
 function removePlayer(socket_id) {
     players = players.filter(player => player.socket_id !== socket_id);

@@ -106,7 +106,12 @@ describe('Game set hokm', function () {
 describe('setWinnerOfDast', function () {
     it('should take the team which has won 7 sets of bazi and make it the winner of dast', function () {
         var object = new Game();
-        var object_winner_team = { won_bazi: 7, won_dast: 0 };
+        object.addPlayer(null, "amir", function () { })
+        object.addPlayer(null, "ali", function () { })
+        object.addPlayer(null, "erfan", function () { })
+        object.addPlayer(null, "narges", function () { })
+        object.hakem = "ali"
+        var object_winner_team = { players: ["ali", "amir"], won_bazi: 7, won_dast: 0 };
         object.setWinnerOfDast(object_winner_team);
         expect(object_winner_team.won_dast).to.be.equal(1);
     })

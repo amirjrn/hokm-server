@@ -2,14 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const player_1 = require("./player");
 var players = [];
-function addPlayer(name, socket_id, done) {
+function addPlayer(name, socket_id) {
     if (players.some(player => player.name === name)) {
-        done('name taken');
+        return new Error("name taken");
     }
-    else {
-        players.push(new player_1.Player(name, socket_id));
-        done(null);
-    }
+    players.push(new player_1.Player(name, socket_id));
+    return "ok";
 }
 exports.addPlayer = addPlayer;
 function removePlayer(socket_id) {

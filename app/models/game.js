@@ -71,9 +71,6 @@ class Game {
     startGame() {
         this.setTeams();
         this.setHakem(null);
-        this.shuffled_cards = new cards_1.Deck();
-        this.shuffled_cards.shuffle();
-        console.log(this.shuffled_cards);
         this.spreadCards();
         this.status = "Game Started";
     }
@@ -85,16 +82,16 @@ class Game {
     }
     setHakem(winnerTeam) {
         // if it is the first game , the game has no winner so hakem should be set randomly.
-        if (this.hakem === undefined) {
+        if (!winnerTeam && this.hakem === undefined) {
             this.shuffled_cards.shuffle();
-            console.log(this.shuffled_cards);
             this.hakemIndex = findFirstace_1.findFirstَََAce(this.shuffled_cards);
             this.hakem = this.players[this.hakemIndex].name;
         }
         // if previuos hakem is in winner team , hakem should not be changed . Otherwise hakem should be next player;
         else {
-            if (!(winnerTeam.players.find(player => player.name === this.hakem.name))) {
+            if (!(winnerTeam.players.find(player => player === this.hakem))) {
                 this.hakemIndex = this.hakemIndex === 3 ? 0 : ++this.hakemIndex;
+                this.hakem = this.players[this.hakemIndex].name;
             }
         }
         // Every time hakem is changed , it's hakem turn to play.
@@ -123,6 +120,8 @@ class Game {
         }
     }
     spreadCards() {
+        this.shuffled_cards = new cards_1.Deck();
+        this.shuffled_cards.shuffle();
         this.players[spreadTurn_1.turn(this.hakemIndex, 0)].cards = this.shuffled_cards.shuffled_deck.slice(0, 13);
         this.players[spreadTurn_1.turn(this.hakemIndex, 1)].cards = this.shuffled_cards.shuffled_deck.slice(13, 26);
         this.players[spreadTurn_1.turn(this.hakemIndex, 2)].cards = this.shuffled_cards.shuffled_deck.slice(26, 39);
@@ -137,34 +136,33 @@ class Game {
     playCard(card, name, done) {
         var player = this.players.find(player => player.name === name);
         if (!player) {
-            return done("you can not send card to this room");
+            return new Error("you can not send card to this room");
         }
         if (this.players[this.playerTurn].name !== name) {
-            return done("it is not your turn");
+            return new Error("it is not your turn");
         }
         if (!player.cards.find(playerCard => playerCard[0] === card[0] && playerCard[1] === card[1])) {
-            return done("you don't have this card");
+            return new Error("you don't have this card");
         }
         if (this.currentCard && player.cards.find(playerCard => playerCard[1] === this.currentCard) && this.currentCard !== card[1]) {
-            return done("please play current card");
+            return new Error("please play current card");
         }
-        this.moveCard(card, player, function (winner) {
-            done(null, "ok", winner);
-        });
+        const has_winner = this.moveCard(card, player);
+        return has_winner;
     }
-    moveCard(card, player, setwinner) {
+    moveCard(card, player) {
         moveCard_1.moveCard(this, card, player);
         if (this.deck.length === 4) {
-            return setwinner(this.setWinnerOfBazi());
+            return this.setWinnerOfBazi();
         }
         if (this.currentCard) {
             this.setPlayerTurn();
-            return setwinner(null);
+            return null;
         }
         if (!this.currentCard) {
             this.setPlayerTurn();
             this.currentCard = card[1];
-            return setwinner(null);
+            return null;
         }
     }
     setWinnerOfBazi() {
@@ -177,12 +175,17 @@ class Game {
         this.finishBazi();
         if (winnerTeam.won_bazi === 7) {
             this.setWinnerOfDast(winnerTeam);
+            // returns winner player an true if bazi is finished
+            return [winnerPlayer, true];
         }
-        return highest[2];
+        // return winner player and false if bazi is not finished
+        return [winnerPlayer, false];
     }
     setWinnerOfDast(winnerTeam) {
-        this.teams = this.teams.map((team) => team.won_bazi = 0);
+        this.teams = this.teams.map((team) => Object.assign(team, { won_bazi: 0 }));
         winnerTeam.won_dast++;
+        this.setHakem(winnerTeam);
+        this.spreadCards();
         if (winnerTeam.won_dast === 7) {
             this.setWinnerOfGame(winnerTeam);
         }
