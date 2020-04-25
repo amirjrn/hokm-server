@@ -1,60 +1,24 @@
-import { Deck as Cards } from './cards';
-import { findFirstَََAce } from '../engine/findFirstace';
+
 import { setHighest } from '../engine/setHighest';
 import { moveCard } from '../engine/moveCard';
-import { GamePlayers } from './gamePlayers'
+import { GamePlayers } from './gamePlayers';
+import { Deck as Cards } from './cards'
 class Table {
     GamePlayers: GamePlayers;
     cards: Cards;
     deck: Array<any>;
-    hakem: string;
-    hakemIndex: number;
     currentHokm: string;
     currentCard: string;
-    playerTurn: number;
-    status: string;
-    constructor(players) {
+    constructor(players, cards, roomstatus) {
         this.GamePlayers = players;
-        this.cards = new Cards();
+        this.cards = cards;
         this.deck = [];
-        this.hakem;
-        this.hakemIndex;
         this.currentHokm;
         this.currentCard;
-        this.playerTurn;
-        this.status = "waiting for players";
-    }
-
-    startGame() {
-        this.setHakem(null);
-        this.status = "Game Started";
-    }
-    stopGame() {
-        this.status === "Stopped";
-    }
-    continueGame() {
-        this.status === "Game Started"
-    }
-    setHakem(winnerTeam) {
-        // if it is the first game , the game has no winner so hakem should be set randomly.
-        if (!winnerTeam && this.hakem === undefined) {
-            this.cards.shuffle();
-            this.hakemIndex = findFirstَََAce(this.cards);
-            this.hakem = this.GamePlayers.players[this.hakemIndex].name;
-        }
-        // if previuos hakem is in winner team , hakem should not be changed . Otherwise hakem should be next player;
-        else {
-            if (!(winnerTeam.players.find(player => player === this.hakem))) {
-                this.hakemIndex = this.hakemIndex === 3 ? 0 : ++this.hakemIndex;
-                this.hakem = this.GamePlayers.players[this.hakemIndex].name;
-            }
-        }
-        // Every time hakem is changed , it's hakem turn to play.
-        this.setPlayerTurn(this.hakemIndex);
     }
     hokm(suit, name, done) {
 
-        if (this.hakem !== name) {
+        if (this.GamePlayers.hakem !== name) {
             done("you are not hakem");
         }
         else {
@@ -62,19 +26,6 @@ class Table {
             done(null)
         }
     }
-    //There are three situations where players turn changes : 
-    // 1-hakem is set : always hakem is the player to play;
-    // 2-card is played : the next player after one who has played card ;
-    // 3-winner Of bazi has been choosen : the player who has played the highest card ;
-    setPlayerTurn(hakemOrWinner: number = undefined) {
-        if (hakemOrWinner !== undefined) {
-            this.playerTurn = hakemOrWinner;
-        }
-        else {
-            this.playerTurn = this.playerTurn === 3 ? 0 : ++this.playerTurn;
-        }
-    }
-
     finishBazi() {
         this.currentCard = null;
         this.deck = [];
@@ -84,7 +35,7 @@ class Table {
         if (!player) {
             return new Error("you can not send card to this room")
         }
-        if (this.GamePlayers.players[this.playerTurn].name !== name) {
+        if (this.GamePlayers.players[this.GamePlayers.playerTurn].name !== name) {
             return new Error("it is not your turn");
         }
         if (!player.cards.find(playerCard => playerCard[0] === card[0] && playerCard[1] === card[1])) {
@@ -103,11 +54,11 @@ class Table {
             return this.setWinnerOfBazi();
         }
         if (this.currentCard) {
-            this.setPlayerTurn();
+            this.GamePlayers.setPlayerTurn();
             return null
         }
         if (!this.currentCard) {
-            this.setPlayerTurn();
+            this.GamePlayers.setPlayerTurn();
             this.currentCard = card[1];
             return null
         }
@@ -118,7 +69,7 @@ class Table {
         var winnerTeam = this.GamePlayers.teams.find(team => team.players.find(player => player === winnerPlayer));
         var winnnerPlayerIndex = this.GamePlayers.players.map(e => e.name).indexOf(winnerPlayer);
         winnerTeam.won_bazi++;
-        this.setPlayerTurn(winnnerPlayerIndex);
+        this.GamePlayers.setPlayerTurn(winnnerPlayerIndex);
         this.finishBazi();
         if (winnerTeam.won_bazi === 7) {
             this.setWinnerOfDast(winnerTeam);
@@ -131,7 +82,7 @@ class Table {
     setWinnerOfDast(winnerTeam) {
         this.GamePlayers.teams = this.GamePlayers.teams.map((team) => Object.assign(team, { won_bazi: 0 }));
         winnerTeam.won_dast++;
-        this.setHakem(winnerTeam);
+        this.GamePlayers.setHakem(winnerTeam);
         this.GamePlayers.spreadCards();
         if (winnerTeam.won_dast === 7) {
             this.setWinnerOfGame(winnerTeam);

@@ -1,26 +1,31 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const findFirstace_1 = require("../engine/findFirstace");
 const spreadTurn_1 = require("../engine/spreadTurn");
 class GamePlayers {
-    constructor(table) {
+    constructor(table, cards, room_status) {
+        this.cards = cards;
         this.table = table;
-        this.#players_connected = 0;
+        this.hakem;
+        this.hakemIndex;
+        this.room_status = room_status;
         this.players = [];
         this.teams = [];
-        this.fullness = false;
+        this.playerTurn;
     }
-    #players_connected;
     addPlayer(socket_id, name, done) {
-        if (this.#players_connected > 4) {
+        if (this.room_status.players_connected >= 4) {
             return done('Game is full');
         }
+        console.log(this.room_status.players_connected);
         // if (!checkFull(this.#players_connected)) {
         //     return this.addDisconnectedPlayer(socket_id, name);
         // }
         this.players.push({ name, socket_id: socket_id });
-        this.#players_connected++;
-        if (this.#players_connected === 4) {
-            this.table.startGame();
+        this.room_status.players_connected++;
+        if (this.room_status.players_connected === 4) {
+            this.room_status.startGame();
+            this.setHakem(null);
             this.setTeams();
             this.spreadCards();
             done(null, "start game");
@@ -37,33 +42,63 @@ class GamePlayers {
     }
     removePlayer(socket) {
         this.players.filter(player => player.socket_id !== socket);
-        this.table.stopGame();
+        this.room_status.stopGame();
     }
     disconnectPlayer(socket) {
         this.players.map(player => player.socket_id = player.socket_id === socket ? null : player.socket_id);
-        this.table.stopGame();
+        this.room_status.stopGame();
     }
-    addDisconnectedPlayer(socket, name) {
-        for (let player of this.players) {
-            if (player.hasOwnProperty('socket_id') && player.socket_id === null) {
-                if (player.name === name) {
-                    player.socket_id = socket.socket_id;
-                    this.#players_connected++;
-                    return;
-                }
+    // addDisconnectedPlayer(socket, name) {
+    //     for (let player of this.players) {
+    //         if (player.hasOwnProperty('socket_id') && player.socket_id === null) {
+    //             if (player.name === name) {
+    //                 player.socket_id = socket.socket_id;
+    //                 this.#players_connected++;
+    //                 return;
+    //             }
+    //         }
+    //     }
+    //     if (this.#players_connected === 4) {
+    //         this.table.continueGame();
+    //     }
+    // }
+    setHakem(winnerTeam) {
+        // if it is the first game , the game has no winner so hakem should be set randomly.
+        if (!winnerTeam && this.hakem === undefined) {
+            this.cards.shuffle();
+            this.hakemIndex = findFirstace_1.findFirstَََAce(this.cards);
+            this.hakem = this.players[this.hakemIndex].name;
+        }
+        // if previuos hakem is in winner team , hakem should not be changed . Otherwise hakem should be next player;
+        else {
+            if (!(winnerTeam.players.find(player => player === this.hakem))) {
+                this.hakemIndex = this.hakemIndex === 3 ? 0 : ++this.hakemIndex;
+                this.hakem = this.players[this.hakemIndex].name;
             }
         }
-        if (this.#players_connected === 4) {
-            this.table.continueGame();
+        // Every time hakem is changed , it's hakem turn to play.
+        this.setPlayerTurn(this.hakemIndex);
+    }
+    //There are three situations where players turn changes : 
+    // 1-hakem is set : always hakem is the player to play;
+    // 2-card is played : the next player after one who has played card ;
+    // 3-winner Of bazi has been choosen : the player who has played the highest card ;
+    setPlayerTurn(hakemOrWinner = undefined) {
+        if (hakemOrWinner !== undefined) {
+            this.playerTurn = hakemOrWinner;
+        }
+        else {
+            this.playerTurn = this.playerTurn === 3 ? 0 : ++this.playerTurn;
         }
     }
     spreadCards() {
-        this.table.cards.reset();
-        this.table.cards.shuffle();
-        this.players[spreadTurn_1.turn(this.table.hakemIndex, 0)].cards = this.table.cards.shuffled_deck.slice(0, 13);
-        this.players[spreadTurn_1.turn(this.table.hakemIndex, 1)].cards = this.table.cards.shuffled_deck.slice(13, 26);
-        this.players[spreadTurn_1.turn(this.table.hakemIndex, 2)].cards = this.table.cards.shuffled_deck.slice(26, 39);
-        this.players[spreadTurn_1.turn(this.table.hakemIndex, 3)].cards = this.table.cards.shuffled_deck.slice(39, 52);
+        console.log(spreadTurn_1.turn(this.hakemIndex, 0));
+        this.cards.reset();
+        this.cards.shuffle();
+        this.players[spreadTurn_1.turn(this.hakemIndex, 0)].cards = this.cards.shuffled_deck.slice(0, 13);
+        this.players[spreadTurn_1.turn(this.hakemIndex, 1)].cards = this.cards.shuffled_deck.slice(13, 26);
+        this.players[spreadTurn_1.turn(this.hakemIndex, 2)].cards = this.cards.shuffled_deck.slice(26, 39);
+        this.players[spreadTurn_1.turn(this.hakemIndex, 3)].cards = this.cards.shuffled_deck.slice(39, 52);
     }
 }
 exports.GamePlayers = GamePlayers;
