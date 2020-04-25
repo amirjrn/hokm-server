@@ -33,23 +33,23 @@ export function joinGame(socket, io) {
                 socket.emit("err", err)
             }
             else {
-                game_obj.addPlayer(socket.id, name, function (error, result) {
+                game_obj.game_players.addPlayer(socket.id, name, function (error, result) {
                     if (error) {
                         socket.emit('err', error)
                     }
                     else {
-                        var other_players = game_obj.players.filter(player => player.socket_id !== socket.id);
+                        var other_players = game_obj.game_players.players.filter(player => player.socket_id !== socket.id);
                         console.log(other_players);
                         other_players.map(player => socket.emit("prev-players", player.name));
                         other_players.map(player => io.to(player.socket_id).emit('new-user', name));
                     }
                     if (result === "start game") {
-                        game_obj.shuffled_cards.dealed_deck.map((card, i) => io.to(game_obj.players[(i % 4)].socket_id).emit("hokm-card", card));
-                        game_obj.players.map(player => io.to(player.socket_id).emit("taeen-hakem", game_obj.hakem));
-                        io.to(game_obj.players[game_obj.playerTurn].socket_id).emit('your_turn', true);
-                        game_obj.players.map(player => io.to(player.socket_id).emit("teams", game_obj.teams))
+                        game_obj.table.cards.dealed_deck.map((card, i) => io.to(game_obj.game_players.players[(i % 4)].socket_id).emit("hokm-card", card));
+                        game_obj.game_players.players.map(player => io.to(player.socket_id).emit("taeen-hakem", game_obj.table.hakem));
+                        io.to(game_obj.game_players.players[game_obj.table.playerTurn].socket_id).emit('your_turn', true);
+                        game_obj.game_players.players.map(player => io.to(player.socket_id).emit("teams", game_obj.game_players.teams))
                         setTimeout(() => {
-                            game_obj.players.map(player => io.to(player.socket_id).emit("cards", player.cards));
+                            game_obj.game_players.players.map(player => io.to(player.socket_id).emit("cards", player.cards));
                         }, 2000);
 
                     }
@@ -72,8 +72,8 @@ export function hokm(socket, io) {
                         socket.emit("err", err);
                     }
                     else {
-                        game_obj.players.map(player => io.to(player.socket_id).emit('hokm', game_obj.currentHokm));
-                        io.to(game_obj.players[game_obj.playerTurn].socket_id).emit('your_turn', true);
+                        game_obj.game_players.players.map(player => io.to(player.socket_id).emit('hokm', game_obj.currentHokm));
+                        io.to(game_obj.game_players.players[game_obj.table.playerTurn].socket_id).emit('your_turn', true);
                     }
                 });
 
@@ -95,20 +95,20 @@ export function sendCard(socket, io) {
             }
             socket.emit("your_turn", false);
             socket.emit("remove-card", card);
-            io.to(game_obj.players[game_obj.playerTurn].socket_id).emit("your_turn", true);
-            game_obj.players.map(player => io.to(player.socket_id).emit('card-played', card, name));
+            io.to(game_obj.game_players.players[game_obj.table.playerTurn].socket_id).emit("your_turn", true);
+            game_obj.game_players.players.map(player => io.to(player.socket_id).emit('card-played', card, name));
             if (result) {
-                game_obj.players.map(player => io.to(player.socket_id).emit('winner-bazi', result[0]))
+                game_obj.game_players.players.map(player => io.to(player.socket_id).emit('winner-bazi', result[0]))
             }
             if (result && result[1]) {
-                game_obj.players.map(player => io.to(player.socket_id).emit("teams", game_obj.teams))
-                game_obj.players.map(player => io.to(player.socket_id).emit("hokm", null));
+                game_obj.game_players.players.map(player => io.to(player.socket_id).emit("teams", game_obj.game_players.teams))
+                game_obj.game_players.players.map(player => io.to(player.socket_id).emit("hokm", null));
                 setTimeout(() => {
-                    game_obj.players.map(player => io.to(player.socket_id).emit("cards", player.cards));
-                    game_obj.players.map(player => io.to(player.socket_id).emit("taeen-hakem", game_obj.hakem));
+                    game_obj.game_players.players.map(player => io.to(player.socket_id).emit("cards", player.cards));
+                    game_obj.game_players.players.map(player => io.to(player.socket_id).emit("taeen-hakem", game_obj.table.hakem));
                 }, 1000);
 
-                io.to(game_obj.players[game_obj.playerTurn].socket_id).emit("your_turn", true);
+                io.to(game_obj.game_players.players[game_obj.table.playerTurn].socket_id).emit("your_turn", true);
             }
         });
     }

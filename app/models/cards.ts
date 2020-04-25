@@ -16,6 +16,10 @@ class Deck {
         this.dealed_deck.push(this.shuffled_deck.pop());
         return this.dealed_deck[this.dealed_deck.length - 1];
     }
+    reset() {
+        this.shuffled_deck = [];
+        this.dealed_deck = [];
+    }
 }
 
 
