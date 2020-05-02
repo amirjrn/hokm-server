@@ -23,7 +23,7 @@ class Table {
         this.currentCard = null;
         this.deck = [];
     }
-    playCard(card, name, done) {
+    playCard(card, name) {
         var player = this.GamePlayers.players.find(player => player.name === name);
         if (!player) {
             return new Error("you can not send card to this room");

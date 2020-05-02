@@ -13,7 +13,6 @@ class Game {
         this.nameOfGame = name;
         this.room_satus = new RoomStatus();
         this.cards = new Cards();
-        console.log(this.room_satus)
         this.game_players = new GamePlayers(this.table, this.cards, this.room_satus);
         this.table = new Table(this.game_players, this.cards, this.room_satus);
 

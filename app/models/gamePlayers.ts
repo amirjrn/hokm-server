@@ -1,5 +1,5 @@
-import { findFirstَََAce } from '../engine/findFirstace';
-import { turn } from '../engine/spreadTurn';
+import { findFirstَََAce } from './helpers/findFirstace';
+import { turn } from './helpers/spreadTurn';
 import { Table } from './table';
 import { Deck as Cards } from './cards';
 import { RoomStatus } from './roomStatus';

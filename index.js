@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const ioServer = require('./app/socket/socket-io')(app);
-const port = process.env.PORT || 3000;
+const port = 300 + process.env.NODE_APP_INSTANCE || 3000;
+console.log(process.env.NODE_APP_INSTANCE);
 //serve client with static files like index.html,img.png
 app.use(express.static('build'));
 // Games Object which holds name of all games already being played and data related to it.
@@ -9,5 +10,3 @@ app.use(express.static('build'));
 ioServer.listen(port, function () {
     console.log(`server listening on port ${port}`);
 });
-async function hello() {
-}

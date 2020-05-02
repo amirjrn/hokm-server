@@ -1,4 +1,4 @@
-import { shuffle } from './../engine/shuffle'
+import { shuffle } from './helpers/shuffle'
 class Deck {
     deck: (Array<number | string>)[]
     dealed_deck: (Array<number | string>)[]

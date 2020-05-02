@@ -1,6 +1,6 @@
 
-import { setHighest } from '../engine/setHighest';
-import { moveCard } from '../engine/moveCard';
+import { setHighest } from './helpers/setHighest';
+import { moveCard } from './helpers/moveCard';
 import { GamePlayers } from './gamePlayers';
 import { Deck as Cards } from './cards'
 class Table {
@@ -30,7 +30,7 @@ class Table {
         this.currentCard = null;
         this.deck = [];
     }
-    playCard(card, name: string, done: Function) {
+    playCard(card, name: string) {
         var player = this.GamePlayers.players.find(player => player.name === name);
         if (!player) {
             return new Error("you can not send card to this room")
