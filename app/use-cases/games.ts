@@ -1,4 +1,4 @@
-import { Game } from './game'
+import { Game } from '../domain/game'
 
 var games: Array<Game> = [];
 
@@ -10,7 +10,6 @@ function addGame(name: string, done: Function) {
         games.push(new Game(name));
         done(null, name + "created")
     }
-
 }
 function removeGame(name) {
     delete games[name];

@@ -1,7 +1,6 @@
-import { sendName, reqListOfGames, createRoom, joinGame, hokm, sendCard, playerDisconnected } from './../socket/EventHandlers/index.js'
+import { sendName, reqListOfGames, createRoom, joinGame, hokm, sendCard, playerDisconnected } from './Controllers/index.js'
 function ioEvents(io) {
     io.on('connection', function (socket) {
-
         socket.on("sendName", sendName(socket));
         socket.on("reqListOfGames", reqListOfGames(socket));
         socket.on('create-room', createRoom(socket, io));

@@ -1,6 +1,6 @@
-import { addGame, findGame, listOfGames } from "../../models/games.js";
-import { addPlayer, removePlayer, disconnectPlayer } from "../../models/palyers";
-import { Game } from './../../models/game';
+import { addGame, findGame, listOfGames } from "../use-cases/games.js";
+import { addPlayer, removePlayer, disconnectPlayer } from "../use-cases/palyers";
+import { Game } from '../domain/game';
 export function sendName(socket) {
     return (name, callback) => {
         const add_player_result = addPlayer(name, socket.id)
@@ -11,7 +11,6 @@ export function reqListOfGames(socket) {
     return () => {
         socket.emit("listOfGames", listOfGames());
     }
-
 }
 export function createRoom(socket, io) {
     return function (gameName: string) {
