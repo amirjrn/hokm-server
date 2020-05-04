@@ -1,6 +1,6 @@
-import Id from '../Id'
 
-export default function makeGameDb({ makeDb }) {
+
+export default function makeHokmDb({ makeDb }) {
   return Object.freeze({
     findAll,
     findByName,
@@ -11,11 +11,8 @@ export default function makeGameDb({ makeDb }) {
   })
   async function findAll() {
     const db = await makeDb()
-    const result = await db.collection('games').find()
-    return (await result.toArray()).map(({ _id: id, ...found }) => ({
-      id,
-      ...found
-    }))
+    const result = await db.collection('games').find().toArray();
+    return result
   }
   async function findById({ id: _id }) {
     const db = await makeDb()
@@ -27,21 +24,21 @@ export default function makeGameDb({ makeDb }) {
     const { _id: id, ...info } = found[0]
     return { id, ...info }
   }
-  async function insert({ id: _id = Id.makeId(), ...commentInfo }) {
+  async function insert({ game }) {
     const db = await makeDb()
     const result = await db
-      .collection('comments')
-      .insertOne({ _id, ...commentInfo })
+      .collection("games")
+      .insertOne(game)
     const { _id: id, ...insertedInfo } = result.ops[0]
     return { id, ...insertedInfo }
   }
 
-  async function update({ id: _id, ...commentInfo }) {
+  async function update(name, game) {
     const db = await makeDb()
     const result = await db
       .collection('comments')
-      .updateOne({ _id }, { $set: { ...commentInfo } })
-    return result.modifiedCount > 0 ? { id: _id, ...commentInfo } : null
+      .updateOne({ gameOfName: name }, { $set: { game } })
+    return result.modifiedCount > 0 ? { gameOfName: name, ...game } : null
   }
   async function remove({ id: _id }) {
     const db = await makeDb()

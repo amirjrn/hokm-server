@@ -3,7 +3,7 @@ import { GamePlayers } from './gamePlayers';
 import { Table } from './table';
 import { Deck as Cards } from './cards';
 import { RoomStatus } from './roomStatus'
-class Game {
+export class Game {
     nameOfGame: string;
     table: Table;
     game_players: GamePlayers;
@@ -18,5 +18,5 @@ class Game {
 
     }
 }
-
-export { Game }
+var hi = "amir";
+export { hi }

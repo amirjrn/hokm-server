@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const games_js_1 = require("../../models/games.js");
-const palyers_1 = require("../../models/palyers");
+const games_js_1 = require("../use-cases/games.js");
+const palyers_1 = require("../use-cases/palyers");
 function sendName(socket) {
     return (name, callback) => {
         const add_player_result = palyers_1.addPlayer(name, socket.id);

@@ -1,5 +1,5 @@
 import makeDb from '../../__test__/fixtures/db'
-import makeCommentsDb from './game-db'
+import makeCommentsDb from './hokm-db.js'
 import makeFakeComment from '../../__test__/fixtures/comment'
 
 describe('comments db', () => {

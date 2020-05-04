@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
-const ioServer = require('./app/socket/socket-io')(app);
+const ioServer = require('./app/socket-io')(app);
+require('dotenv').config();
+console.log(process.env);
 const port = 300 + process.env.NODE_APP_INSTANCE || 3000;
 console.log(process.env.NODE_APP_INSTANCE);
 //serve client with static files like index.html,img.png
