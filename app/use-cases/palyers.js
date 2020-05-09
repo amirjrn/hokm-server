@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const player_1 = require("../domain/player");
-var players = [];
 function addPlayer(name, socket_id) {
     if (players.some(player => player.name === name)) {
         return new Error("name taken");

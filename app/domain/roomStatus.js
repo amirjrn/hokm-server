@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class RoomStatus {
-    constructor() {
-        this.players_connected = 0;
-        this.status = "waiting for players";
-        this.hakemIndex = undefined;
+    constructor({ players_connected, status, hakemIndex }) {
+        this.players_connected = players_connected;
+        this.status = status;
+        this.hakemIndex = hakemIndex;
     }
     stopGame() {
         this.status === "Stopped";
@@ -15,6 +15,13 @@ class RoomStatus {
     startGame() {
         // this.setHakem(null);
         this.status = "Game Started";
+    }
+    GetState() {
+        return {
+            players_connected: this.players_connected,
+            status: this.status,
+            hakemIndex: this.hakemIndex
+        };
     }
 }
 exports.RoomStatus = RoomStatus;

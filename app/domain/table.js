@@ -3,12 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const setHighest_1 = require("./helpers/setHighest");
 const moveCard_1 = require("./helpers/moveCard");
 class Table {
-    constructor(players, cards, roomstatus) {
-        this.GamePlayers = players;
-        this.cards = cards;
-        this.deck = [];
-        this.currentHokm;
-        this.currentCard;
+    constructor({ GamePlayers, deck, currentHokm, currentCard }) {
+        this.GamePlayers = GamePlayers;
+        this.deck = deck;
+        this.currentHokm = currentHokm;
+        this.currentCard = currentCard;
     }
     hokm(suit, name, done) {
         if (this.GamePlayers.hakem !== name) {
@@ -81,6 +80,13 @@ class Table {
         }
     }
     setWinnerOfGame(winnerTeam) {
+    }
+    GetState() {
+        return {
+            deck: this.deck,
+            currentHokm: this.currentHokm,
+            currentCard: this.currentCard
+        };
     }
 }
 exports.Table = Table;

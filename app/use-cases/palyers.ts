@@ -1,5 +1,4 @@
 import { Player } from "../domain/player";
-var players = [];
 
 function addPlayer(name: string, socket_id: string) {
     if (players.some(player => player.name === name)) {

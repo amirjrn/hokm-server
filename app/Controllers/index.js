@@ -1,67 +1,48 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const games_js_1 = require("../use-cases/games.js");
+const index_1 = require("../use-cases/index");
 const palyers_1 = require("../use-cases/palyers");
 function sendName(socket) {
-    return (name, callback) => {
-        const add_player_result = palyers_1.addPlayer(name, socket.id);
+    return async ({ name, callback }) => {
+        const add_player_result = await palyers_1.addPlayer(name, socket.id);
         !(add_player_result instanceof Error) ? callback(false, "ok") : callback(add_player_result.message, false);
     };
 }
 exports.sendName = sendName;
 function reqListOfGames(socket) {
-    return () => {
-        socket.emit("listOfGames", games_js_1.listOfGames());
+    return async () => {
+        const list_of_games = await index_1.listOfGames();
+        socket.emit("listOfGames", list_of_games);
     };
 }
 exports.reqListOfGames = reqListOfGames;
 function createRoom(socket, io) {
-    return function (gameName) {
-        games_js_1.addGame(gameName, function (err, result) {
-            if (err) {
-                socket.emit('err', 'Room name already created . Try another name');
-            }
-            else {
-                io.emit('new-game', gameName);
-            }
-        });
+    return async function (gameName) {
+        await index_1.addGame(gameName);
+        io.emit('new-game', gameName);
     };
 }
 exports.createRoom = createRoom;
 function joinGame(socket, io) {
-    return (gameName, name) => {
-        games_js_1.findGame(gameName, function (err, game_obj) {
-            if (err) {
-                socket.emit("err", err);
-            }
-            else {
-                game_obj.game_players.addPlayer(socket.id, name, function (error, result) {
-                    if (error) {
-                        socket.emit('err', error);
-                    }
-                    else {
-                        var other_players = game_obj.game_players.players.filter(player => player.socket_id !== socket.id);
-                        console.log(other_players);
-                        other_players.map(player => socket.emit("prev-players", player.name));
-                        other_players.map(player => io.to(player.socket_id).emit('new-user', name));
-                    }
-                    if (result === "start game") {
-                        game_obj.table.cards.dealed_deck.map((card, i) => io.to(game_obj.game_players.players[(i % 4)].socket_id).emit("hokm-card", card));
-                        game_obj.game_players.players.map(player => io.to(player.socket_id).emit("taeen-hakem", game_obj.game_players.hakem));
-                        game_obj.game_players.players.map(player => io.to(player.socket_id).emit("teams", game_obj.game_players.teams));
-                        setTimeout(() => {
-                            game_obj.game_players.players.map(player => io.to(player.socket_id).emit("cards", player.cards));
-                        }, 2000);
-                    }
-                });
-            }
-        });
+    return async (gameName, name) => {
+        const { game, add_player_result } = await index_1.addPlayerToGame(gameName, socket.id, name);
+        const other_players = game.game_players.players.filter(player => player.socket_id !== socket.id);
+        other_players.map(player => socket.emit("prev-players", player.name));
+        other_players.map(player => io.to(player.socket_id).emit('new-user', name));
+        if (add_player_result === "start game") {
+            game.cards.dealed_deck.map((card, i) => io.to(game.game_players.players[(i % 4)].socket_id).emit("hokm-card", card));
+            game.game_players.players.map(player => io.to(player.socket_id).emit("taeen-hakem", game.game_players.hakem));
+            game.game_players.players.map(player => io.to(player.socket_id).emit("teams", game.game_players.teams));
+            setTimeout(() => {
+                game.game_players.players.map(player => io.to(player.socket_id).emit("cards", player.cards));
+            }, 2000);
+        }
     };
 }
 exports.joinGame = joinGame;
 function hokm(socket, io) {
     return function (suit, name, gameName) {
-        games_js_1.findGame(gameName, function (err, game_obj) {
+        index_1.findGame(gameName, function (err, game_obj) {
             if (err) {
                 socket.emit("err", err);
             }
@@ -81,7 +62,7 @@ function hokm(socket, io) {
 exports.hokm = hokm;
 function sendCard(socket, io) {
     return function (cardNumber, cardSuit, name, gameName, callback) {
-        games_js_1.findGame(gameName, function (err, game_obj) {
+        index_1.findGame(gameName, function (err, game_obj) {
             if (err) {
                 return socket.emit("err", err);
             }

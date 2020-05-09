@@ -2,29 +2,22 @@
 import { setHighest } from './helpers/setHighest';
 import { moveCard } from './helpers/moveCard';
 import { GamePlayers } from './gamePlayers';
-import { Deck as Cards } from './cards'
 class Table {
     GamePlayers: GamePlayers;
-    cards: Cards;
     deck: Array<any>;
     currentHokm: string;
     currentCard: string;
-    constructor(players, cards, roomstatus) {
-        this.GamePlayers = players;
-        this.cards = cards;
-        this.deck = [];
-        this.currentHokm;
-        this.currentCard;
+    constructor({ GamePlayers, deck, currentHokm, currentCard }) {
+        this.GamePlayers = GamePlayers;
+        this.deck = deck;
+        this.currentHokm = currentHokm;
+        this.currentCard = currentCard;
     }
-    hokm(suit, name, done) {
-
+    hokm(suit, name) {
         if (this.GamePlayers.hakem !== name) {
-            done("you are not hakem");
+            throw new Error("you are not hakem");
         }
-        else {
-            this.currentHokm = suit;
-            done(null)
-        }
+        this.currentHokm = suit;
     }
     finishBazi() {
         this.currentCard = null;
@@ -90,6 +83,13 @@ class Table {
     }
     setWinnerOfGame(winnerTeam) {
 
+    }
+    GetState() {
+        return {
+            deck: this.deck,
+            currentHokm: this.currentHokm,
+            currentCard: this.currentCard
+        }
     }
 }
 

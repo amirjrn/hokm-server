@@ -3,21 +3,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const findFirstace_1 = require("./helpers/findFirstace");
 const spreadTurn_1 = require("./helpers/spreadTurn");
 class GamePlayers {
-    constructor(table, cards, room_status) {
+    constructor({ cards, room_status, hakem, hakemIndex, players, teams, playerTurn }) {
         this.cards = cards;
-        this.table = table;
-        this.hakem;
-        this.hakemIndex;
         this.room_status = room_status;
-        this.players = [];
-        this.teams = [];
-        this.playerTurn;
+        this.hakem = hakem;
+        this.hakemIndex = hakemIndex;
+        this.players = players;
+        this.teams = teams;
+        this.playerTurn = playerTurn;
     }
-    addPlayer(socket_id, name, done) {
+    addPlayer(socket_id, name) {
         if (this.room_status.players_connected >= 4) {
-            return done('Game is full');
+            throw new Error('Game is full');
         }
-        console.log(this.room_status.players_connected);
         // if (!checkFull(this.#players_connected)) {
         //     return this.addDisconnectedPlayer(socket_id, name);
         // }
@@ -28,10 +26,10 @@ class GamePlayers {
             this.setHakem(null);
             this.setTeams();
             this.spreadCards();
-            done(null, "start game");
+            return "start game";
         }
         else {
-            done(null, "ok");
+            return "ok";
         }
     }
     setTeams() {
@@ -99,6 +97,15 @@ class GamePlayers {
         this.players[spreadTurn_1.turn(this.hakemIndex, 1)].cards = this.cards.shuffled_deck.slice(13, 26);
         this.players[spreadTurn_1.turn(this.hakemIndex, 2)].cards = this.cards.shuffled_deck.slice(26, 39);
         this.players[spreadTurn_1.turn(this.hakemIndex, 3)].cards = this.cards.shuffled_deck.slice(39, 52);
+    }
+    GetState() {
+        return {
+            hakem: this.hakem,
+            hakemIndex: this.hakemIndex,
+            players: this.players,
+            teams: this.teams,
+            playerTurn: this.playerTurn
+        };
     }
 }
 exports.GamePlayers = GamePlayers;

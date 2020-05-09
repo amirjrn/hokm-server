@@ -1,26 +1,21 @@
 
 import { createClient } from 'redis'
-const client = createClient();
-import makeHokmDb from './hokm-db'
-import { Game } from '../domain/game'
+import makeHokmDb from './game-db'
 import { config } from 'dotenv';
+import { promisify } from 'util';
 config();
-const dbName = process.env.DB_NAME;
-const game = new Game("mona");
-client.set(game.nameOfGame, JSON.stringify(game));
+const gamesDbNumber = process.env.GAMES_DB_NUMBER;
+const playersDbNumber = process.env.PLAYERS_DB_NUMBER
 
-//  export async function makeDb() {
-//    if (!client.isConnected()) {
-//      await client.connect()
-//    }
-//    return client.db(dbName)
-//  }
-//  const hokmDb = makeHokmDb({ makeDb });
+export function makeDb(dbNumber) {
+    const client = createClient({ db: dbNumber });
+    client.on("error", function (err) {
+        console.error(err)
+    })
+    return { makeDb: client }
+}
 
+const gamesDb = makeHokmDb({ ...makeDb(gamesDbNumber), promisify });
+const playersDb = makeHokmDb({ ...makeDb(playersDbNumber), promisify });
 
-// export default hokmDb
-
-
-
-
-
+export { gamesDb, playersDb }

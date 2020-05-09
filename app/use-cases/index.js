@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const index_1 = require("./../data-access/index");
+const games_js_1 = require("./games.js");
+const addGame = games_js_1.makeAddGame(index_1.gamesDb);
+exports.addGame = addGame;
+const findGame = games_js_1.makeFindGame(index_1.gamesDb);
+exports.findGame = findGame;
+const listOfGames = games_js_1.makeListOfGames(index_1.gamesDb);
+exports.listOfGames = listOfGames;
+const rebuildGame = games_js_1.makeRebuildGame(index_1.gamesDb);
+exports.rebuildGame = rebuildGame;
+const addPlayerToGame = games_js_1.makeAddPlayerToGame(index_1.gamesDb);
+exports.addPlayerToGame = addPlayerToGame;
