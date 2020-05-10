@@ -10,7 +10,7 @@ function makeListOfGames(gameDb: IgameDb): Function {
 }
 
 function makeAddGame(gameDb: IgameDb): Function {
-    return async function (name: string): Promise<void> {
+    return async function (name: string): Promise<Object> {
         if (await gameDb.findByName(name)) {
             throw new Error('این اتاق وجود دارد. لطفا نام دیگری وارد کنید');
         }
@@ -31,7 +31,7 @@ function makeFindGame(gameDb: IgameDb): Function {
 function makeAddPlayerToGame(gameDb: IgameDb): Function {
     return async function (gameName: string, socket_id: string, name: string) {
         const game_data = await findWithError(gameName, gameDb);
-        const game = new Gamebuilder(game_data.name).reBuild(game_data).build();
+        const game = new Gamebuilder(game_data.nameOfGame).reBuild(game_data).build();
         const add_player_result = game.game_players.addPlayer(socket_id, name);
         gameDb.insertObject(gameName, game.GetState())
         return { game, add_player_result }
@@ -40,18 +40,18 @@ function makeAddPlayerToGame(gameDb: IgameDb): Function {
 function makePlayCard(gameDb: IgameDb) {
     return async function (card, name, gameName) {
         const game_data = await findWithError(gameName, gameDb);
-        const parsed_game_data = JSON.parse(game_data);
-        const game = new Gamebuilder(parsed_game_data.name).reBuild(parsed_game_data).build();
+        const game = new Gamebuilder(game_data.nameOfGame).reBuild(game_data).build();
         const result = game.table.playCard(card, name);
+        gameDb.insertObject(gameName, game.GetState())
         return { game, result };
     }
 }
 function makeHokm(gameDb: IgameDb) {
     return async function (suit, name, gameName) {
         const game_data = await findWithError(gameName, gameDb);
-        const parsed_game_data = JSON.parse(game_data);
-        const game = new Gamebuilder(parsed_game_data.name).reBuild(parsed_game_data).build();
+        const game = new Gamebuilder(game_data.nameOfGame).reBuild(game_data).build();
         game.table.hokm(suit, name);
+        gameDb.insertObject(gameName, game.GetState())
         return game;
     }
 }

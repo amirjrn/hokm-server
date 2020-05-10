@@ -1,4 +1,4 @@
-import { addGame, listOfGames, addPlayerToGame, playCard, hokm as playHokm } from "../use-cases/index";
+import { addGame, listOfGames, addPlayerToGame, playCard, sendHokm } from "../use-cases/index";
 import { addPlayer, removePlayer, disconnectPlayer } from "../use-cases/palyers";
 import checkStartGame from './helpers/checkStartGame';
 import checkWinner from './helpers/checkWinner'
@@ -32,7 +32,7 @@ export function joinGame(socket, io) {
 }
 export function hokm(socket, io) {
     return async function (suit, name, gameName) {
-        const game = await playHokm(suit, name, gameName);
+        const game = await sendHokm(suit, name, gameName);
         game.game_players.players.map(player => io.to(player.socket_id).emit('hokm', game.table.currentHokm));
 
     }

@@ -37,7 +37,7 @@ function joinGame(socket, io) {
 exports.joinGame = joinGame;
 function hokm(socket, io) {
     return async function (suit, name, gameName) {
-        const game = await index_1.hokm(suit, name, gameName);
+        const game = await index_1.sendHokm(suit, name, gameName);
         game.game_players.players.map(player => io.to(player.socket_id).emit('hokm', game.table.currentHokm));
     };
 }

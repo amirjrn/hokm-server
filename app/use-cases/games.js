@@ -32,7 +32,7 @@ exports.makeFindGame = makeFindGame;
 function makeAddPlayerToGame(gameDb) {
     return async function (gameName, socket_id, name) {
         const game_data = await findWithError_1.default(gameName, gameDb);
-        const game = new game_1.Gamebuilder(game_data.name).reBuild(game_data).build();
+        const game = new game_1.Gamebuilder(game_data.nameOfGame).reBuild(game_data).build();
         const add_player_result = game.game_players.addPlayer(socket_id, name);
         gameDb.insertObject(gameName, game.GetState());
         return { game, add_player_result };
@@ -42,9 +42,9 @@ exports.makeAddPlayerToGame = makeAddPlayerToGame;
 function makePlayCard(gameDb) {
     return async function (card, name, gameName) {
         const game_data = await findWithError_1.default(gameName, gameDb);
-        const parsed_game_data = JSON.parse(game_data);
-        const game = new game_1.Gamebuilder(parsed_game_data.name).reBuild(parsed_game_data).build();
+        const game = new game_1.Gamebuilder(game_data.nameOfGame).reBuild(game_data).build();
         const result = game.table.playCard(card, name);
+        gameDb.insertObject(gameName, game.GetState());
         return { game, result };
     };
 }
@@ -52,9 +52,9 @@ exports.makePlayCard = makePlayCard;
 function makeHokm(gameDb) {
     return async function (suit, name, gameName) {
         const game_data = await findWithError_1.default(gameName, gameDb);
-        const parsed_game_data = JSON.parse(game_data);
-        const game = new game_1.Gamebuilder(parsed_game_data.name).reBuild(parsed_game_data).build();
+        const game = new game_1.Gamebuilder(game_data.nameOfGame).reBuild(game_data).build();
         game.table.hokm(suit, name);
+        gameDb.insertObject(gameName, game.GetState());
         return game;
     };
 }

@@ -12,7 +12,7 @@ export default function makeHokmDb({ makeDb, promisify }): IgameDb {
   async function findByName(name: string): Promise<IGame> {
     return JSON.parse(await getAsync(name));
   }
-  async function insertObject(name, obj): Promise<void> {
+  async function insertObject(name, obj): Promise<Object> {
     return setAsync(name, JSON.stringify(obj))
   }
   async function remove(name) {
