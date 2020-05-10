@@ -9,14 +9,11 @@ class Table {
         this.currentHokm = currentHokm;
         this.currentCard = currentCard;
     }
-    hokm(suit, name, done) {
+    hokm(suit, name) {
         if (this.GamePlayers.hakem !== name) {
-            done("you are not hakem");
+            throw new Error("you are not hakem");
         }
-        else {
-            this.currentHokm = suit;
-            done(null);
-        }
+        this.currentHokm = suit;
     }
     finishBazi() {
         this.currentCard = null;

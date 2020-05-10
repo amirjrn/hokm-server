@@ -2,8 +2,6 @@ import { addGame, listOfGames, addPlayerToGame, playCard, hokm as playHokm } fro
 import { addPlayer, removePlayer, disconnectPlayer } from "../use-cases/palyers";
 import checkStartGame from './helpers/checkStartGame';
 import checkWinner from './helpers/checkWinner'
-import { Game } from '../domain/game';
-import { gamesDb } from "../data-access";
 
 export function sendName(socket) {
     return async ({ name, callback }) => {

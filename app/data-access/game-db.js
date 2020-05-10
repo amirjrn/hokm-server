@@ -5,22 +5,11 @@ function makeHokmDb({ makeDb, promisify }) {
     const setAsync = promisify(makeDb.set).bind(makeDb);
     const deleteAsync = promisify(makeDb.del).bind(makeDb);
     const keysAsync = promisify(makeDb.keys).bind(makeDb);
-    return Object.freeze({
-        findAll,
-        findByName,
-        insertObject,
-        remove,
-        makeDb
-    });
     async function findAll() {
         return keysAsync('*');
     }
     async function findByName(name) {
-        const game = await getAsync(name);
-        if (!game) {
-            throw new Error('Game did not found');
-        }
-        return game;
+        return JSON.parse(await getAsync(name));
     }
     async function insertObject(name, obj) {
         return setAsync(name, JSON.stringify(obj));
@@ -28,5 +17,11 @@ function makeHokmDb({ makeDb, promisify }) {
     async function remove(name) {
         return deleteAsync(name);
     }
+    return Object.freeze({
+        findAll,
+        findByName,
+        insertObject,
+        remove
+    });
 }
 exports.default = makeHokmDb;

@@ -1,28 +1,28 @@
-
-
-export default function makeHokmDb({ makeDb, promisify }) {
+import IgameDb from './interfaces/IgameDb';
+import IGame from '../domain/interfaces/IGame'
+export default function makeHokmDb({ makeDb, promisify }): IgameDb {
   const getAsync = promisify(makeDb.get).bind(makeDb);
   const setAsync = promisify(makeDb.set).bind(makeDb);
   const deleteAsync = promisify(makeDb.del).bind(makeDb);
   const keysAsync = promisify(makeDb.keys).bind(makeDb);
-  return Object.freeze({
-    findAll,
-    findByName,
-    insertObject,
-    remove,
-    makeDb
-  })
 
-  async function findAll() {
+  async function findAll(): Promise<Array<string>> {
     return keysAsync('*');
   }
-  async function findByName(name) {
-    return await getAsync(name);
+  async function findByName(name: string): Promise<IGame> {
+    return JSON.parse(await getAsync(name));
   }
-  async function insertObject(name, obj) {
+  async function insertObject(name, obj): Promise<void> {
     return setAsync(name, JSON.stringify(obj))
   }
   async function remove(name) {
     return deleteAsync(name);
   }
+  return Object.freeze({
+    findAll,
+    findByName,
+    insertObject,
+    remove
+  })
+
 }

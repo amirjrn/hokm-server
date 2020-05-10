@@ -2,7 +2,8 @@
 import { GamePlayers } from './gamePlayers';
 import { Table } from './table';
 import { Deck as Cards } from './cards';
-import { RoomStatus } from './roomStatus'
+import { RoomStatus } from './roomStatus';
+import IGame from './interfaces/IGame'
 export class Game {
     nameOfGame: string;
     table: Table;
@@ -16,9 +17,9 @@ export class Game {
         this.game_players = new GamePlayers({ cards: this.cards, room_status: this.room_status, ...gamebuilder });
         this.table = new Table({ GamePlayers: this.game_players, ...gamebuilder });
     }
-    GetState() {
+    GetState(): IGame {
         return {
-            name: this.nameOfGame,
+            nameOfGame: this.nameOfGame,
             ...this.room_status.GetState(),
             ...this.cards.GetState(),
             ...this.game_players.GetState(),
@@ -27,7 +28,7 @@ export class Game {
     }
 }
 
-export class Gamebuilder {
+export class Gamebuilder implements IGame {
     nameOfGame: string;
     shuffled_deck: Array<any>;
     dealed_deck: Array<any>;

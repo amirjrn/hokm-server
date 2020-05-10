@@ -3,53 +3,59 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const game_1 = require("../domain/game");
 const palyers_1 = require("./palyers");
 exports.addPlayer = palyers_1.addPlayer;
-function makeAddGame(gamesDb) {
-    return async function (name) {
-        if (await gamesDb.findByName(name)) {
-            throw new Error('Room name already created . Try another name');
-        }
-        return gamesDb.insertObject(name, new game_1.Gamebuilder(name).build().GetState());
-    };
-}
-exports.makeAddGame = makeAddGame;
-function removeGame(name) {
-    delete games[name];
-}
-function makeListOfGames(gamesDb) {
+const findWithError_1 = require("./helpers/findWithError");
+function makeListOfGames(gameDb) {
     return async function () {
-        return await gamesDb.findAll();
+        return await gameDb.findAll();
     };
 }
 exports.makeListOfGames = makeListOfGames;
-function makeRebuildGame(gamesDb) {
+function makeAddGame(gameDb) {
     return async function (name) {
-        const game_data = await gamesDb.findByName(name);
-        if (game_data) {
-            const parsed_game_data = JSON.parse(game_data);
-            return new game_1.Gamebuilder(parsed_game_data.name).reBuild(parsed_game_data).build();
+        if (await gameDb.findByName(name)) {
+            throw new Error('این اتاق وجود دارد. لطفا نام دیگری وارد کنید');
+        }
+        return gameDb.insertObject(name, new game_1.Gamebuilder(name).build().GetState());
+    };
+}
+exports.makeAddGame = makeAddGame;
+function makeFindGame(gameDb) {
+    return async function (gameName) {
+        const game = await gameDb.findByName(gameName);
+        if (game) {
+            return game;
         }
         throw new Error("Game did not found");
     };
 }
-exports.makeRebuildGame = makeRebuildGame;
-function makeFindGame(gamesDb) {
-    return async function (gameName) {
-        const game = await gamesDb.findByName(gameName);
-        if (game) {
-            return game;
-        }
-        return new Error("Game did not found");
-    };
-}
 exports.makeFindGame = makeFindGame;
-function makeAddPlayerToGame(gamesDb) {
+function makeAddPlayerToGame(gameDb) {
     return async function (gameName, socket_id, name) {
-        const game_data = await gamesDb.findByName(gameName);
-        const parsed_game_data = JSON.parse(game_data);
-        const game = new game_1.Gamebuilder(parsed_game_data.name).reBuild(parsed_game_data).build();
+        const game_data = await findWithError_1.default(gameName, gameDb);
+        const game = new game_1.Gamebuilder(game_data.name).reBuild(game_data).build();
         const add_player_result = game.game_players.addPlayer(socket_id, name);
-        gamesDb.insertObject(gameName, game.GetState());
+        gameDb.insertObject(gameName, game.GetState());
         return { game, add_player_result };
     };
 }
 exports.makeAddPlayerToGame = makeAddPlayerToGame;
+function makePlayCard(gameDb) {
+    return async function (card, name, gameName) {
+        const game_data = await findWithError_1.default(gameName, gameDb);
+        const parsed_game_data = JSON.parse(game_data);
+        const game = new game_1.Gamebuilder(parsed_game_data.name).reBuild(parsed_game_data).build();
+        const result = game.table.playCard(card, name);
+        return { game, result };
+    };
+}
+exports.makePlayCard = makePlayCard;
+function makeHokm(gameDb) {
+    return async function (suit, name, gameName) {
+        const game_data = await findWithError_1.default(gameName, gameDb);
+        const parsed_game_data = JSON.parse(game_data);
+        const game = new game_1.Gamebuilder(parsed_game_data.name).reBuild(parsed_game_data).build();
+        game.table.hokm(suit, name);
+        return game;
+    };
+}
+exports.makeHokm = makeHokm;

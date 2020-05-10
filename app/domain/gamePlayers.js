@@ -90,7 +90,6 @@ class GamePlayers {
         }
     }
     spreadCards() {
-        console.log(spreadTurn_1.turn(this.hakemIndex, 0));
         this.cards.reset();
         this.cards.shuffle();
         this.players[spreadTurn_1.turn(this.hakemIndex, 0)].cards = this.cards.shuffled_deck.slice(0, 13);

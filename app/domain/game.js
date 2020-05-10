@@ -14,7 +14,7 @@ class Game {
     }
     GetState() {
         return {
-            name: this.nameOfGame,
+            nameOfGame: this.nameOfGame,
             ...this.room_status.GetState(),
             ...this.cards.GetState(),
             ...this.game_players.GetState(),
