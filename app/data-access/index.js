@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const game_db_1 = require("./game-db");
+const redisdb_1 = require("./redisdb");
 const dotenv_1 = require("dotenv");
 const util_1 = require("util");
 const makeRedisDb_1 = require("./helpers/makeRedisDb");
 dotenv_1.config();
 const gamesDbNumber = process.env.GAMES_DB_NUMBER;
 const playersDbNumber = process.env.PLAYERS_DB_NUMBER;
-const gamesDb = game_db_1.default({ ...makeRedisDb_1.default(gamesDbNumber), promisify: util_1.promisify });
+const gamesDb = redisdb_1.default({ ...makeRedisDb_1.default(gamesDbNumber), promisify: util_1.promisify });
 exports.gamesDb = gamesDb;
