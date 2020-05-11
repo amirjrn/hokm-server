@@ -5,8 +5,9 @@ const dotenv_1 = require("dotenv");
 dotenv_1.config();
 const gamesDbNumber = process.env.GAMES_DB_NUMBER;
 const playersDbNumber = process.env.PLAYERS_DB_NUMBER;
+const url = process.env.REDIS_URL;
 function makeDb(dbNumber) {
-    const client = redis_1.createClient({ db: dbNumber });
+    const client = redis_1.createClient({ url: url, db: dbNumber });
     client.on("error", function (err) {
         console.error(err);
     });

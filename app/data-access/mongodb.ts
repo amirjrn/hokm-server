@@ -12,9 +12,9 @@ export default function makeHokmDb(makeDb): IgameDb {
         const res = await db.collection('games').find({ nameOfGame }).toArray();
         return res[0];
     }
-    async function insertObject(name: string, obj: IGame): Promise<Object> {
+    async function insertObject(nameOfGame: string, obj: IGame): Promise<Object> {
         const db = await makeDb()
-        const updateResult = await db.collection('games').updateOne({ name }, { $set: obj })
+        const updateResult = await db.collection('games').updateOne({ nameOfGame }, { $set: obj })
         if (updateResult.result.n === 0) {
             const insertResult = await db
                 .collection('games')

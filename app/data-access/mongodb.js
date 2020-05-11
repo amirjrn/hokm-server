@@ -11,9 +11,9 @@ function makeHokmDb(makeDb) {
         const res = await db.collection('games').find({ nameOfGame }).toArray();
         return res[0];
     }
-    async function insertObject(name, obj) {
+    async function insertObject(nameOfGame, obj) {
         const db = await makeDb();
-        const updateResult = await db.collection('games').updateOne({ name }, { $set: obj });
+        const updateResult = await db.collection('games').updateOne({ nameOfGame }, { $set: obj });
         if (updateResult.result.n === 0) {
             const insertResult = await db
                 .collection('games')
