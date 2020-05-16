@@ -6,5 +6,5 @@ services:
     restart: on-failure
     build: .
     ports:
-      - "4000:3000"
-  
+      - "3000:3000"
+

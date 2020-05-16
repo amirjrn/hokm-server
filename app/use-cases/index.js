@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.playCard = exports.sendHokm = exports.addPlayerToGame = exports.listOfGames = exports.findGame = exports.addGame = void 0;
 const index_1 = require("./../data-access/index");
 const games_js_1 = require("./games.js");
 const addGame = games_js_1.makeAddGame(index_1.gamesDb);

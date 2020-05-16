@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.reconnectPlayer = exports.disconnectPlayer = exports.removePlayer = exports.addPlayer = void 0;
 const player_1 = require("../domain/player");
 function addPlayer(name, socket_id) {
     if (players.some(player => player.name === name)) {

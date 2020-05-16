@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.setHighest = void 0;
 const sortCards_1 = require("./sortCards");
 function setHighest(deck, hokm, currentCard) {
     // Filter deck from cards that theirs suit are not either equal to currentCard or hokm;

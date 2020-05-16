@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.shuffle = void 0;
 function shuffle(deck) {
     var cloned_deck = [...deck];
     cloned_deck.sort(function () {

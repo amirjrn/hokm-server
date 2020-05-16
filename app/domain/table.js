@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Table = void 0;
 const setHighest_1 = require("./helpers/setHighest");
 const moveCard_1 = require("./helpers/moveCard");
 class Table {

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RoomStatus = void 0;
 class RoomStatus {
     constructor({ players_connected, status, hakemIndex }) {
         this.players_connected = players_connected;

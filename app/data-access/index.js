@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.gamesDb = void 0;
 const redisdb_1 = require("./redisdb");
 const dotenv_1 = require("dotenv");
 const util_1 = require("util");

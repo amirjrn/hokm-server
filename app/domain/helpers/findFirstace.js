@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.findFirstَََAce = void 0;
 function findFirstَََAce(shuffled_cards) {
     var player_turn = 0;
     var hakemIndex;

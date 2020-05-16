@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.makeAddPlayerToGame = exports.makeHokm = exports.makePlayCard = exports.makeFindGame = exports.makeListOfGames = exports.makeAddGame = exports.addPlayer = void 0;
 const game_1 = require("../domain/game");
 const palyers_1 = require("./palyers");
-exports.addPlayer = palyers_1.addPlayer;
+Object.defineProperty(exports, "addPlayer", { enumerable: true, get: function () { return palyers_1.addPlayer; } });
 const findWithError_1 = require("./helpers/findWithError");
 function makeListOfGames(gameDb) {
     return async function () {

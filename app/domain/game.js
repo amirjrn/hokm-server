@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Gamebuilder = exports.Game = void 0;
 const gamePlayers_1 = require("./gamePlayers");
 const table_1 = require("./table");
 const cards_1 = require("./cards");

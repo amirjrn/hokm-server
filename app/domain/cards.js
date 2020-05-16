@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Deck = void 0;
 const shuffle_1 = require("./helpers/shuffle");
 class Deck {
     constructor({ dealed_deck, shuffled_deck }) {

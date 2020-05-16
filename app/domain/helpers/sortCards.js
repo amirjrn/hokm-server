@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.sortCards = void 0;
 function sortCards(arrayToSort, bySuit) {
     var sorted_deck = arrayToSort.sort(function (a, b) {
         return b[0] - a[0];

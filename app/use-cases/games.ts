@@ -37,7 +37,7 @@ function makeAddPlayerToGame(gameDb: IgameDb): Function {
         return { game, add_player_result }
     }
 }
-function makePlayCard(gameDb: IgameDb) {
+function makePlayCard(gameDb: IgameDb) :Function  {
     return async function (card, name, gameName) {
         const game_data = await findWithError(gameName, gameDb);
         const game = new Gamebuilder(game_data.nameOfGame).reBuild(game_data).build();
@@ -46,7 +46,7 @@ function makePlayCard(gameDb: IgameDb) {
         return { game, result };
     }
 }
-function makeHokm(gameDb: IgameDb) {
+function makeHokm(gameDb: IgameDb) : Function {
     return async function (suit, name, gameName) {
         const game_data = await findWithError(gameName, gameDb);
         const game = new Gamebuilder(game_data.nameOfGame).reBuild(game_data).build();
