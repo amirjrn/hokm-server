@@ -1,0 +1,10 @@
+version: "3"
+services:
+  redis-server:
+    image: "redis"
+  hokm-app:
+    restart: on-failure
+    build: .
+    ports:
+      - "4000:3000"
+  

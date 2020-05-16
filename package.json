@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start  index.js -i 4 ",
+    "start": "node index.js",
     "dev": "nodemon --exec babel-node index.js",
     "test": "mocha --recursive --watch --require @babel/register"
   },

@@ -3,7 +3,7 @@ const app = express();
 const ioServer = require('./app/socket-io')(app);
 require('dotenv').config();
 
-const port = 300 + process.env.NODE_APP_INSTANCE || 3000;
+const port =  3000;
 
 //serve client with static files like index.html,img.png
 app.use(express.static('build'));

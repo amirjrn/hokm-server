@@ -1,3 +1,2 @@
 node_modules
-*.env
-*.js
+npm-debug.log
