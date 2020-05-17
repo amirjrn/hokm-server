@@ -1,8 +1,8 @@
-import { Gamebuilder } from '../domain/game'
+import { Gamebuilder } from '../domain/game/game'
 import { addPlayer } from './palyers';
 import findWithError from './helpers/findWithError'
 import IgameDb from '../data-access/interfaces/IgameDb'
-import IGame from '../domain/interfaces/IGame'
+import IGame from '../domain/game/interfaces/IGame'
 function makeListOfGames(gameDb: IgameDb): Function {
     return async function (): Promise<Array<string>> {
         return await gameDb.findAll();

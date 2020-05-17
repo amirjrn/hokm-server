@@ -1,5 +1,5 @@
 import IgameDb from './interfaces/IgameDb';
-import IGame from '../domain/interfaces/IGame'
+import IGame from '../domain/game/interfaces/IGame'
 export default function makeHokmDb({ makeDb, promisify }): IgameDb {
   const getAsync = promisify(makeDb.get).bind(makeDb);
   const setAsync = promisify(makeDb.set).bind(makeDb);

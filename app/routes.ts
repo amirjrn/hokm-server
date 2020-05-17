@@ -1,6 +1,6 @@
 import { sendName, reqListOfGames, createRoom, joinGame, hokm, sendCard, playerDisconnected } from './Controllers/index.js'
 import errorHandler from './Controllers/helpers/errorHandler'
-function ioEvents(io) {
+export function ioEvents(io) {
     io.on('connection', function (socket) {
         socket.on("sendName", errorHandler(sendName(socket)));
         socket.on("reqListOfGames", errorHandler(reqListOfGames(socket)));
@@ -12,5 +12,3 @@ function ioEvents(io) {
     });
 }
 
-module.exports = ioEvents;
-export { }

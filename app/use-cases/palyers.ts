@@ -1,21 +1,25 @@
-import { Player } from "../domain/player";
+import { Player } from "../domain/player/player";
 
-function addPlayer(name: string, socket_id: string) {
-    if (players.some(player => player.name === name)) {
-        return new Error("name taken")
+export function makeAddPlayer(name: string, socket_id: string) {
+    return async function (){
+        if (players.some(player => player.name === name)) {
+            throw new Error("name taken")
+        }
+        await palyersDb.insertObject({name , socket_id})
+        return "ok"
     }
-    players.push(new Player(name, socket_id));
-    return "ok"
+    
 }
-function removePlayer(socket_id) {
-    players = players.filter(player => player.socket_id !== socket_id);
+export function makeRemovePlayer(socket_id) {
+    return async function(){
+         
+    };
 }
-function disconnectPlayer(socket_id) {
+export function makeDisconnectPlayer(socket_id) {
     var player = players.find(player => player.socket_id = socket_id);
     player.disconnect();
 }
-function reconnectPlayer(name) {
+export function makeReconnectPlayer(name) {
     var player = players.find(player => player.name = name);
     player.reconnect();
 }
-export { addPlayer, removePlayer, disconnectPlayer, reconnectPlayer }

@@ -1,4 +1,4 @@
-import IGame from './../../domain/interfaces/IGame'
+import IGame from '../../domain/game/interfaces/IGame'
 export default interface IgameDb {
     findAll: () => Promise<Array<string>>
     findByName: (name: string) => Promise<IGame>

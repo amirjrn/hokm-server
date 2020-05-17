@@ -1,6 +1,6 @@
 import IgameDb from './interfaces/IgameDb'
-import IGame from './../domain/interfaces/IGame'
-export default function makeHokmDb(makeDb): IgameDb {
+import IGame from '../domain/game/interfaces/IGame'
+export default function makePlayerDb(makeDb): IgameDb {
 
     async function findAll(): Promise<Array<string>> {
         const db = await makeDb();
