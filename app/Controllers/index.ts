@@ -5,8 +5,7 @@ import checkWinner from './helpers/checkWinner'
 
 export function sendName(socket) {
     return async ({ name, callback }) => {
-        const add_player_result = await addPlayer(name, socket.id)
-        !(add_player_result instanceof Error) ? callback(false, "ok") : callback(add_player_result.message, false)
+       await addPlayer(name, socket.id , callback)   
     }
 }
 export function reqListOfGames(socket) {

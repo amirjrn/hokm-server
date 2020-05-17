@@ -1,25 +1,31 @@
 import { Player } from "../domain/player/player";
-
-export function makeAddPlayer(name: string, socket_id: string) {
-    return async function (){
-        if (players.some(player => player.name === name)) {
+import IplayersDb from './../data-access/interfaces/IplayerDb'
+import { playersDb } from "../data-access";
+export function makeAddPlayer(playersDb : IplayersDb) {
+    return async function (name: string, socket_id: string , callback ){
+        if (await playersDb.findByName(name)) {
             throw new Error("name taken")
         }
-        await palyersDb.insertObject({name , socket_id})
-        return "ok"
+        await playersDb.insertObject(name, new Player(name, socket_id));
+        callback(false , "OK")
+    }
+}
+export function makeRemovePlayer(playersDb : IplayersDb) {
+    return async function(socket_id){
+          await playersDb.remove(socket_id)
+    };
+}
+export function makeDisconnectPlayer(playersDb : IplayersDb) {
+    return async function (socket_id) {
+        var player = await playersDb.findByName(socket_id);
+        player.disconnect();
     }
     
 }
-export function makeRemovePlayer(socket_id) {
-    return async function(){
-         
-    };
-}
-export function makeDisconnectPlayer(socket_id) {
-    var player = players.find(player => player.socket_id = socket_id);
-    player.disconnect();
-}
-export function makeReconnectPlayer(name) {
-    var player = players.find(player => player.name = name);
-    player.reconnect();
+export function makeReconnectPlayer(playersDb : IplayersDb) {
+    return async function (socket_id) {
+        var player = await playersDb.findByName(socket_id);
+        player.reconnect();
+    }
+    
 }

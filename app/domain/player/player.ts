@@ -1,4 +1,5 @@
-class Player {
+import IPlayer from './interfaces/IPlayer'
+class Player implements IPlayer {
     name: string;
     socket_id: string;
     connected: boolean;
