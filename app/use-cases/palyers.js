@@ -7,7 +7,7 @@ function makeAddPlayer(playersDb) {
         if (await playersDb.findByProp(name)) {
             throw new Error('name taken');
         }
-        await playersDb.insertObject(name, new player_1.Player(name, socket_id));
+        await playersDb.insertObject(name, new player_1.Player(name, socket_id).getState());
         callback(false, 'OK');
     };
 }

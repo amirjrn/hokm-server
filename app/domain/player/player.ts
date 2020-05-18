@@ -18,5 +18,13 @@ class Player implements IPlayer {
       this.connected = true
     }
   }
+  getState() {
+    return {
+      name: this.name,
+      socket_id: this.socket_id,
+      connected: this.connected,
+    }
+  }
 }
+
 export { Player }

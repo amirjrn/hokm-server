@@ -12,7 +12,7 @@ import errorHandler from './controllers/helpers/errorHandler'
 export function ioEvents(io) {
   // Add event listeners after a user has connected.
   io.on('connection', function (socket) {
-    socket.on('sendName', errorHandler(sendName(socket)))
+    socket.on('join', errorHandler(sendName(socket)))
     socket.on('reqListOfGames', errorHandler(reqListOfGames(socket)))
     socket.on('createGame', errorHandler(createRoom(socket, io)))
     socket.on('joinGame', errorHandler(joinGame(socket, io)))

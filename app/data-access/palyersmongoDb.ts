@@ -10,20 +10,20 @@ export default function makePlayersMongoDb(
 
   async function findByProp(prop: string): Promise<IPlayer> {
     const db = await makeDb()
-    const res = await db.collection('palyers').find({ prop }).toArray()
+    const res = await db.collection('players').find({ prop }).toArray()
     return res[0]
   }
 
   // function to insert a player to mongodb or update it if exists
   async function insertObject(
-    nameOfGame: string,
+    name: string,
     obj: IPlayer
   ): Promise<InsertOneWriteOpResult<any>> {
     //update the player's data
     const db = await makeDb()
     const updateResult = await db
-      .collection('palyers')
-      .updateOne({ nameOfGame }, { $set: obj })
+      .collection('players')
+      .updateOne({ name }, { $set: obj })
     //if player's data does not exist then insert it
     if (updateResult.result.n === 0) {
       return await db.collection('players').insertOne(obj)

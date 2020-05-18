@@ -6,7 +6,7 @@ export function makeAddPlayer(playersDb: IplayersDb): Function {
     if (await playersDb.findByProp(name)) {
       throw new Error('name taken')
     }
-    await playersDb.insertObject(name, new Player(name, socket_id))
+    await playersDb.insertObject(name, new Player(name, socket_id).getState())
     callback(false, 'OK')
   }
 }

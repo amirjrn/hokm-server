@@ -10,7 +10,7 @@ import checkStartGame from './helpers/checkStartGame'
 import checkWinner from './helpers/checkWinner'
 
 export function sendName(socket) {
-  return async ({ name, callback }) => {
+  return async (name, callback) => {
     await addPlayer(name, socket.id, callback)
   }
 }
