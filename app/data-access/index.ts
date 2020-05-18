@@ -1,5 +1,5 @@
 import makeGamesRedisDb from './gamesRedisDb'
-import makePlayerMongoDb from './palyersmongoDb'
+import makePlayersMongoDb from './palyersmongoDb'
 import { config } from 'dotenv'
 import { promisify } from 'util'
 import makeMongoDb from './helpers/makeMongoDb'
@@ -10,5 +10,5 @@ config()
 const gamesDbNumber = process.env.GAMES_DB_NUMBER
 
 const gamesDb: IgameDb = makeGamesRedisDb(makeRedisDb(gamesDbNumber), promisify)
-const playersDb: IplayerDb = makePlayerMongoDb(makeMongoDb)
+const playersDb: IplayerDb = makePlayersMongoDb(makeMongoDb)
 export { gamesDb, playersDb }

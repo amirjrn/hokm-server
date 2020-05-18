@@ -5,6 +5,6 @@ async function findWithError(gameName, gamesDb) {
     if (game) {
         return game;
     }
-    throw new Error("Game did not found");
+    throw new Error('Game did not found');
 }
 exports.default = findWithError;

@@ -10,13 +10,13 @@ export default function makeGamesRedisDb(
   const deleteAsync = promisify(makeDb.del).bind(makeDb)
   const keysAsync = promisify(makeDb.keys).bind(makeDb)
 
-  async function findAll(): Promise<Array<string>> {
+  async function findAll(): Promise<string[]> {
     return keysAsync('*')
   }
   async function findByName(name: string): Promise<IGame> {
     return JSON.parse(await getAsync(name))
   }
-  async function insertObject(name, obj): Promise<Object> {
+  async function insertObject(name, obj): Promise<boolean> {
     return setAsync(name, JSON.stringify(obj))
   }
   async function remove(name) {
