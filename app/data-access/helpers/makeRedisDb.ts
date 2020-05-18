@@ -1,7 +1,10 @@
-import { createClient } from 'redis'
+import { createClient, RedisClient } from 'redis'
 
-export default function makeDb(dbNumber) {
-    const client = createClient({ host: 'redis-server', port: 6379, db: dbNumber });
-    console.log("s")
-    return { makeDb: client }
+export default function makeDb(dbNumber): RedisClient {
+  const client = createClient({
+    host: 'redis-server',
+    port: 6379,
+    db: dbNumber,
+  })
+  return client
 }
