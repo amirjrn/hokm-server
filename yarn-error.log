@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/bin/node /usr/bin/yarn add ts-node
+  /usr/bin/node /usr/bin/yarn add @types/redis
 
 PATH: 
   /home/amir/bin:/home/amir/.local/bin:/home/amir/bin:/home/amir/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
@@ -50,6 +50,7 @@ npm manifest:
       "selenium-webdriver": "^4.0.0-alpha.7",
       "socket.io": "^2.3.0",
       "socket.io-redis": "^5.2.0",
+      "ts-node": "^8.10.1",
       "webpack": "^4.42.1",
       "winston": "^3.2.1"
     },

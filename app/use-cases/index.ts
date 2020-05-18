@@ -1,7 +1,19 @@
-import { gamesDb , playersDb } from './../data-access/index';
-import { makeAddGame, makeFindGame, makeListOfGames, makeAddPlayerToGame, makePlayCard, makeHokm } from "./games.js";
-import {makeAddPlayer , makeRemovePlayer , makeDisconnectPlayer , makeReconnectPlayer } from './palyers'
-// games use cases 
+import { gamesDb, playersDb } from "./../data-access/index";
+import {
+  makeAddGame,
+  makeFindGame,
+  makeListOfGames,
+  makeAddPlayerToGame,
+  makePlayCard,
+  makeHokm,
+} from "./games.js";
+import {
+  makeAddPlayer,
+  makeRemovePlayer,
+  makeDisconnectPlayer,
+  makeReconnectPlayer,
+} from "./palyers";
+// games use cases
 const addGame = makeAddGame(gamesDb);
 const findGame = makeFindGame(gamesDb);
 const listOfGames = makeListOfGames(gamesDb);
@@ -11,6 +23,20 @@ const playCard = makePlayCard(gamesDb);
 
 // players use cases
 
-const addPlayer = makeAddPlayer(playersDb)
+const addPlayer = makeAddPlayer(playersDb);
+const removePlayer = makeRemovePlayer(playersDb);
+const disconnectPlayer = makeDisconnectPlayer(playersDb);
+const reconnectPlayer = makeReconnectPlayer(playersDb);
 
-export { addGame, findGame, listOfGames, addPlayerToGame, sendHokm, playCard }
+export {
+  addGame,
+  findGame,
+  listOfGames,
+  addPlayerToGame,
+  sendHokm,
+  playCard,
+  addPlayer,
+  removePlayer,
+  disconnectPlayer,
+  reconnectPlayer,
+};
