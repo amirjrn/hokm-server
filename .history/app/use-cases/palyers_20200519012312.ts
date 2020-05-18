@@ -12,8 +12,8 @@ export function makeAddPlayer(playersDb: IplayersDb): Function {
 }
 
 export function makeRemovePlayer(playersDb: IplayersDb): Function {
-  return async function (name) {
-    await playersDb.remove(name)
+  return async function (socket_id) {
+    await playersDb.remove(socket_id)
   }
 }
 export function makeDisconnectPlayer(playersDb: IplayersDb): Function {

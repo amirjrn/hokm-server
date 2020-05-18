@@ -2,18 +2,17 @@ import { Player } from '../domain/player/player'
 import IplayersDb from './../data-access/interfaces/IplayerDb'
 
 export function makeAddPlayer(playersDb: IplayersDb): Function {
-  return async function (name: string, socket_id: string, callback) {
+  return async function (name: string, socket_id: string) {
     if (await playersDb.findByProp(name)) {
       throw new Error('name taken')
     }
     await playersDb.insertObject(name, new Player(name, socket_id).getState())
-    callback('Ok')
   }
 }
 
 export function makeRemovePlayer(playersDb: IplayersDb): Function {
-  return async function (name) {
-    await playersDb.remove(name)
+  return async function (socket_id) {
+    await playersDb.remove(socket_id)
   }
 }
 export function makeDisconnectPlayer(playersDb: IplayersDb): Function {

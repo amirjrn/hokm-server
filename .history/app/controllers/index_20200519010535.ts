@@ -10,8 +10,8 @@ import checkStartGame from './helpers/checkStartGame'
 import checkWinner from './helpers/checkWinner'
 
 export function sendName(socket) {
-  return async (name, callback) => {
-    await addPlayer(name, socket.id, callback)
+  return async (name) => {
+    await addPlayer(name, socket.id)
   }
 }
 export function reqListOfGames(socket) {

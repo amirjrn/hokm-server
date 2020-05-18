@@ -8,10 +8,9 @@ export default function makePlayersMongoDb(
 ): IplayerDb {
   // function to find a single player by its props
 
-  async function findByProp(name: string): Promise<IPlayer> {
+  async function findByProp(prop: string): Promise<IPlayer> {
     const db = await makeDb()
-    const res = await db.collection('players').find({ name }).toArray()
-    console.log(res[0])
+    const res = await db.collection('players').find({ prop }).toArray()
     return res[0]
   }
 

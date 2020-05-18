@@ -23,7 +23,7 @@ export function reqListOfGames(socket) {
 export function createRoom(socket, io) {
   return async function (gameName: string) {
     await addGame(gameName)
-    io.emit('newGame', gameName)
+    io.emit('new-game', gameName)
   }
 }
 export function joinGame(socket, io) {

@@ -7,13 +7,13 @@ export function makeAddPlayer(playersDb: IplayersDb): Function {
       throw new Error('name taken')
     }
     await playersDb.insertObject(name, new Player(name, socket_id).getState())
-    callback('Ok')
+    callback(null, 'Ok')
   }
 }
 
 export function makeRemovePlayer(playersDb: IplayersDb): Function {
-  return async function (name) {
-    await playersDb.remove(name)
+  return async function (socket_id) {
+    await playersDb.remove(socket_id)
   }
 }
 export function makeDisconnectPlayer(playersDb: IplayersDb): Function {

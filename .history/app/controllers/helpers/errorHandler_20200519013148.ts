@@ -1,6 +1,6 @@
 export default function errorHandler(controller: Function) {
   return async function () {
-    // last argument of socket.io callback is a callback to use it to response to client
+    // last argument of socket.io callb[ck is a callback to use it to response to client
     const callback = arguments[arguments.length - 1]
     try {
       await controller(...arguments)
