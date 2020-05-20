@@ -4,7 +4,7 @@ import IgameDb from '../data-access/interfaces/IgameDb'
 import IGame from '../domain/game/interfaces/IGame'
 
 function makeListOfGames(gameDb: IgameDb): Function {
-  return async function (): Promise<string[]> {
+  return async function (): Promise<Array<string>> {
     return await gameDb.findAll()
   }
 }

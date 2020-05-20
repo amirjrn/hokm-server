@@ -8,7 +8,7 @@ import {
   playerDisconnected,
 } from './controllers/index.js'
 import errorHandler from './controllers/helpers/errorHandler'
-// Routes should not be tightly coupled to socket library so we inject io object to routes
+
 export function ioEvents(io) {
   // Add event listeners after a user has connected.
   io.on('connection', function (socket) {

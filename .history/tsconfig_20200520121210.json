@@ -3,7 +3,7 @@
     "target": "ESNext",
     "watch": true,
     "module": "CommonJS",
-    "types": ["node", "mocha"],
+    "types": ["mocha"],
     "lib": ["ES2020"]
     // "types": [
     //     "node"

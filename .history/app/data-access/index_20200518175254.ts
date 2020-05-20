@@ -1,5 +1,5 @@
 import makeGamesRedisDb from './gamesRedisDb'
-import makePlayersMongoDb from './palyersMongoDb'
+import makePlayersMongoDb from './palyersmongoDb'
 import { config } from 'dotenv'
 import { promisify } from 'util'
 import makeMongoDb from './helpers/makeMongoDb'

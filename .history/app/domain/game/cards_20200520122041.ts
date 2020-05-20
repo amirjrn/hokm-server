@@ -3,7 +3,7 @@ class Deck {
   deck: Array<number | string>[]
   dealed_deck: Array<number | string>[]
   shuffled_deck: Array<number | string>[]
-  constructor({ dealed_deck = [], shuffled_deck = [] } = {}) {
+  constructor({ dealed_deck, shuffled_deck }) {
     this.deck = [
       [1, 'khaj'],
       [2, 'khaj'],

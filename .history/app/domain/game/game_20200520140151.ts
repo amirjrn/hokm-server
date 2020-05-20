@@ -64,7 +64,7 @@ export class Gamebuilder implements IGame {
     players_connected = this.players_connected,
     status = this.status,
     hakemIndex = this.hakemIndex,
-  } = {}) {
+  }) {
     this.players_connected = players_connected
     this.status = status
     this.hakemIndex = hakemIndex
