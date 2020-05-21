@@ -1,4 +1,4 @@
-import { Deck as Cards } from '../../../../app/domain/game/cards'
+import { Deck as Cards } from '../../../../app/domain/game/Cards'
 import { expect } from 'chai'
 describe('Cards', function () {
   it('should be instance of Deck', function () {
