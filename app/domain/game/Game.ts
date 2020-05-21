@@ -6,6 +6,7 @@ import { Player } from '../player/player'
 import IGame from './interfaces/IGame'
 import IRoomStatus from './interfaces/IRoomStatus'
 import IPlayer from '../player/interfaces/IPlayer'
+import ITeam from './interfaces/ITeam'
 export class Game {
   readonly nameOfGame: string
 
@@ -47,17 +48,17 @@ export class Game {
 
 export class Gamebuilder implements IGame {
   nameOfGame: string
-  shuffled_deck: Array<any>
-  dealed_deck: Array<any>
-  deck: Array<any>
+  shuffled_deck: [number, string][]
+  dealed_deck_tracker: number
+  deck: [number, string, string][]
   players_connected: number
   hakem: string
   hakemIndex: number
   currentHokm: string
   currentCard: string
   playerTurn: number
-  players: Array<any>
-  teams: Array<any>
+  players: IPlayer[]
+  teams: ITeam[]
   status: string
   constructor(name: string) {
     if (!name) {
@@ -65,7 +66,7 @@ export class Gamebuilder implements IGame {
     }
     this.nameOfGame = name
     this.shuffled_deck = []
-    this.dealed_deck = []
+    this.dealed_deck_tracker = 0
     this.deck = []
     this.players_connected = 0
     this.hakem
@@ -88,7 +89,7 @@ export class Gamebuilder implements IGame {
     return this
   }
   setCards({ dealed_deck, shuffled_deck }) {
-    this.dealed_deck = dealed_deck
+    this.dealed_deck_tracker = dealed_deck
     this.shuffled_deck = shuffled_deck
     return this
   }
@@ -115,7 +116,7 @@ export class Gamebuilder implements IGame {
   reBuild({
     players_connected,
     status,
-    dealed_deck,
+    dealed_deck_tracker,
     shuffled_deck,
     hakemIndex,
     hakem,
@@ -127,7 +128,7 @@ export class Gamebuilder implements IGame {
     currentCard,
   }) {
     this.shuffled_deck = shuffled_deck
-    this.dealed_deck = dealed_deck
+    this.dealed_deck_tracker = dealed_deck_tracker
     this.deck = deck
     this.players_connected = players_connected
     this.hakem = hakem
