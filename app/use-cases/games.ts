@@ -1,4 +1,4 @@
-import { Gamebuilder } from '../domain/game/game'
+import { Gamebuilder } from '../domain/game/Game'
 import findWithError from './helpers/findWithError'
 import IgameDb from '../data-access/interfaces/IgameDb'
 import IGame from '../domain/game/interfaces/IGame'

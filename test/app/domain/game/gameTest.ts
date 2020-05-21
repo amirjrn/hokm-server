@@ -1,4 +1,4 @@
-import { Game } from './../../../../app/domain/game/game'
+import { Game } from '../../../../app/domain/game/Game'
 const expect = require('chai').expect
 const sinon = require('sinon')
 const setHighest = require('./../../../app/engine/setHighest')

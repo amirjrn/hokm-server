@@ -2,34 +2,45 @@ import { GamePlayers } from './gamePlayers'
 import { Table } from './table'
 import { Deck as Cards } from './cards'
 import { RoomStatus } from './roomStatus'
+import { Player } from '../player/player'
 import IGame from './interfaces/IGame'
 import IRoomStatus from './interfaces/IRoomStatus'
-import { Player } from './../player/player'
+import IPlayer from '../player/interfaces/IPlayer'
 export class Game {
-  nameOfGame: string
-  table: Table
-  game_players: GamePlayers
+  readonly nameOfGame: string
+
+  private _table: Table
+  get table() {
+    return this._table
+  }
+
+  private _game_players: GamePlayers
+  get game_players() {
+    return this.game_players
+  }
+
   cards: Cards
   room_status: IRoomStatus
+  player: IPlayer
   constructor(gamebuilder: Gamebuilder) {
     this.nameOfGame = gamebuilder.nameOfGame
     this.room_status = new RoomStatus({ ...gamebuilder })
     this.cards = new Cards({ ...gamebuilder })
-    this.game_players = new GamePlayers({
-      cards: this.cards,
+    this._game_players = new GamePlayers({
       player: Player,
+      cards: this.cards,
       room_status: this.room_status,
       ...gamebuilder,
     })
-    this.table = new Table({ GamePlayers: this.game_players, ...gamebuilder })
+    this._table = new Table({ GamePlayers: this._game_players, ...gamebuilder })
   }
   GetState(): IGame {
     return {
       nameOfGame: this.nameOfGame,
       ...this.room_status.GetState(),
       ...this.cards.GetState(),
-      ...this.game_players.GetState(),
-      ...this.table.GetState(),
+      ...this._game_players.GetState(),
+      ...this._table.GetState(),
     }
   }
 }

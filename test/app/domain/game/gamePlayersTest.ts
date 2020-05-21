@@ -1,4 +1,4 @@
-import { Gamebuilder } from './../../../../app/domain/game/game'
+import { Gamebuilder } from '../../../../app/domain/game/Game'
 import { expect } from 'chai'
 
 describe('Game addplayer method', function () {
