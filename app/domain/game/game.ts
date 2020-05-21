@@ -3,12 +3,13 @@ import { Table } from './table'
 import { Deck as Cards } from './cards'
 import { RoomStatus } from './roomStatus'
 import IGame from './interfaces/IGame'
+import IRoomStatus from './interfaces/IRoomStatus'
 export class Game {
   nameOfGame: string
   table: Table
   game_players: GamePlayers
   cards: Cards
-  room_status: RoomStatus
+  room_status: IRoomStatus
   constructor(gamebuilder: Gamebuilder) {
     this.nameOfGame = gamebuilder.nameOfGame
     this.room_status = new RoomStatus({ ...gamebuilder })

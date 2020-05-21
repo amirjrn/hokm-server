@@ -1,8 +1,8 @@
 import { shuffle } from './helpers/shuffle'
 class Deck {
-  deck: Array<number | string>[]
-  dealed_deck: Array<number | string>[]
-  shuffled_deck: Array<number | string>[]
+  deck: [number, string][]
+  dealed_deck: [number, string][]
+  shuffled_deck: [number, string][]
   constructor({ dealed_deck = [], shuffled_deck = [] } = {}) {
     this.deck = [
       [1, 'khaj'],
