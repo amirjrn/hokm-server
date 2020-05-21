@@ -1,4 +1,4 @@
-import { GamePlayers } from './gamePlayers'
+import { GamePlayers } from './GamePlayers'
 import { Table } from './table'
 import { Deck as Cards } from './Cards'
 import { RoomStatus } from './roomStatus'

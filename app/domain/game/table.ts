@@ -1,6 +1,6 @@
 import { setHighest } from './helpers/setHighest'
 import { moveCard } from './helpers/moveCard'
-import { GamePlayers } from './gamePlayers'
+import { GamePlayers } from './GamePlayers'
 class Table {
   private _GamePlayers: GamePlayers
 
