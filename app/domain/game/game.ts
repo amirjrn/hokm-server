@@ -46,6 +46,9 @@ export class Gamebuilder implements IGame {
   teams: Array<any>
   status: string
   constructor(name: string) {
+    if (!name) {
+      throw new Error('لطفا یک نام برای بازی تعیین کنید')
+    }
     this.nameOfGame = name
     this.shuffled_deck = []
     this.dealed_deck = []

@@ -1,17 +1,38 @@
 import { findFirstَََAce } from './helpers/findFirstace'
 import { turn } from './helpers/spreadTurn'
-import { Table } from './table'
 import { Deck as Cards } from './cards'
 import { RoomStatus } from './roomStatus'
+import ITeam from './interfaces/ITeam'
 class GamePlayers {
-  room_status: RoomStatus
-  players: Array<any>
-  table: Table
-  hakem: string
-  hakemIndex: number
-  cards: Cards
-  teams: Array<any>
-  playerTurn: number
+  private _room_status: RoomStatus
+  private _cards: Cards
+
+  private _players: Array<any>
+  get players() {
+    return this._players
+  }
+
+  private _hakem: string
+  get hakem() {
+    return this._hakem
+  }
+
+  private _hakemIndex: number
+  get hakemIndex() {
+    return this.hakemIndex
+  }
+
+  private _teams: Array<any>
+  get teams() {
+    return this._teams
+  }
+  set teams(teams: ITeam[]) {
+    this._teams = teams
+  }
+  _playerTurn: number
+  get playerTurn() {
+    return this._playerTurn
+  }
   constructor({
     cards,
     room_status,
@@ -21,58 +42,59 @@ class GamePlayers {
     teams,
     playerTurn,
   }) {
-    this.cards = cards
-    this.room_status = room_status
-    this.hakem = hakem
-    this.hakemIndex = hakemIndex
-    this.players = players
-    this.teams = teams
-    this.playerTurn = playerTurn
+    this._cards = cards
+    this._room_status = room_status
+    this._hakem = hakem
+    this._hakemIndex = hakemIndex
+    this._players = players
+    this._teams = teams
+    this._playerTurn = playerTurn
   }
   addPlayer(socket_id: string, name: string) {
-    if (this.room_status.players_connected >= 4) {
+    if (this._room_status.players_connected >= 4) {
       throw new Error('Game is full')
     }
     // if (!checkFull(this.#players_connected)) {
     //     return this.addDisconnectedPlayer(socket_id, name);
     // }
-    this.players.push({ name, socket_id: socket_id })
-    this.room_status.players_connected++
-    if (this.room_status.players_connected === 4) {
-      this.room_status.startGame()
+    this._players.push({ name, socket_id: socket_id })
+    this._room_status.players_connected++
+    if (this._room_status.players_connected === 4) {
+      this._room_status.startGame()
       this.setHakem(null)
-      this.setTeams()
+      this.initTeams()
       this.spreadCards()
       return 'start game'
-    } else {
-      return 'ok'
     }
+    return 'ok'
   }
-  setTeams() {
-    this.teams = [
+  initTeams() {
+    this._teams = [
       {
-        players: [this.players[0].name, this.players[2].name],
+        //the first team includes first and third players from players list
+        players: [this._players[0].name, this._players[2].name],
         won_dast: 0,
         won_bazi: 0,
       },
+      // the second team includes second and forth player from players list
       {
-        players: [this.players[1].name, this.players[3].name],
+        players: [this._players[1].name, this._players[3].name],
         won_dast: 0,
         won_bazi: 0,
       },
     ]
   }
   removePlayer(socket) {
-    this.players.filter((player) => player.socket_id !== socket)
-    this.room_status.stopGame()
+    this._players.filter((player) => player.socket_id !== socket)
+    this._room_status.stopGame()
   }
   disconnectPlayer(socket) {
-    this.players.map(
+    this._players.map(
       (player) =>
         (player.socket_id =
           player.socket_id === socket ? null : player.socket_id)
     )
-    this.room_status.stopGame()
+    this._room_status.stopGame()
   }
   // addDisconnectedPlayer(socket, name) {
   //     for (let player of this.players) {
@@ -90,20 +112,18 @@ class GamePlayers {
   // }
   setHakem(winnerTeam) {
     // if it is the first game , the game has no winner so hakem should be set randomly.
-    if (!winnerTeam && this.hakem === undefined) {
-      this.cards.shuffle()
-      this.hakemIndex = findFirstَََAce(this.cards)
-      this.hakem = this.players[this.hakemIndex].name
+    if (!winnerTeam && this._hakem === undefined) {
+      this._cards.shuffle()
+      this._hakemIndex = findFirstَََAce(this._cards)
+      this._hakem = this._players[this._hakemIndex].name
     }
     // if previuos hakem is in winner team , hakem should not be changed . Otherwise hakem should be next player;
-    else {
-      if (!winnerTeam.players.find((player) => player === this.hakem)) {
-        this.hakemIndex = this.hakemIndex === 3 ? 0 : ++this.hakemIndex
-        this.hakem = this.players[this.hakemIndex].name
-      }
+    else if (!winnerTeam.players.find((player) => player === this._hakem)) {
+      this._hakemIndex = this._hakemIndex === 3 ? 0 : ++this._hakemIndex
+      this._hakem = this._players[this._hakemIndex].name
     }
-    // Every time hakem is changed , it's hakem turn to play.
-    this.setPlayerTurn(this.hakemIndex)
+    // Every time hakem is changed , it is hakem's turn to play.
+    this.setPlayerTurn(this._hakemIndex)
   }
 
   //There are three situations where players turn changes :
@@ -112,34 +132,34 @@ class GamePlayers {
   // 3-winner Of bazi has been choosen : the player who has played the highest card ;
   setPlayerTurn(hakemOrWinner: number = undefined) {
     if (hakemOrWinner !== undefined) {
-      this.playerTurn = hakemOrWinner
+      this._playerTurn = hakemOrWinner
     } else {
-      this.playerTurn = this.playerTurn === 3 ? 0 : ++this.playerTurn
+      this._playerTurn = this._playerTurn === 3 ? 0 : ++this._playerTurn
     }
   }
   spreadCards() {
-    this.cards.reset()
-    this.cards.shuffle()
-    this.players[
-      turn(this.hakemIndex, 0)
-    ].cards = this.cards.shuffled_deck.slice(0, 13)
-    this.players[
-      turn(this.hakemIndex, 1)
-    ].cards = this.cards.shuffled_deck.slice(13, 26)
-    this.players[
-      turn(this.hakemIndex, 2)
-    ].cards = this.cards.shuffled_deck.slice(26, 39)
-    this.players[
-      turn(this.hakemIndex, 3)
-    ].cards = this.cards.shuffled_deck.slice(39, 52)
+    this._cards.reset()
+    this._cards.shuffle()
+    this._players[
+      turn(this._hakemIndex, 0)
+    ].cards = this._cards.shuffled_deck.slice(0, 13)
+    this._players[
+      turn(this._hakemIndex, 1)
+    ].cards = this._cards.shuffled_deck.slice(13, 26)
+    this._players[
+      turn(this._hakemIndex, 2)
+    ].cards = this._cards.shuffled_deck.slice(26, 39)
+    this._players[
+      turn(this._hakemIndex, 3)
+    ].cards = this._cards.shuffled_deck.slice(39, 52)
   }
   GetState() {
     return {
-      hakem: this.hakem,
-      hakemIndex: this.hakemIndex,
-      players: this.players,
-      teams: this.teams,
-      playerTurn: this.playerTurn,
+      hakem: this._hakem,
+      hakemIndex: this._hakemIndex,
+      players: this._players,
+      teams: this._teams,
+      playerTurn: this._playerTurn,
     }
   }
 }
