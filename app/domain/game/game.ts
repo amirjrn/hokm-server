@@ -4,6 +4,7 @@ import { Deck as Cards } from './cards'
 import { RoomStatus } from './roomStatus'
 import IGame from './interfaces/IGame'
 import IRoomStatus from './interfaces/IRoomStatus'
+import { Player } from './../player/player'
 export class Game {
   nameOfGame: string
   table: Table
@@ -16,6 +17,7 @@ export class Game {
     this.cards = new Cards({ ...gamebuilder })
     this.game_players = new GamePlayers({
       cards: this.cards,
+      player: Player,
       room_status: this.room_status,
       ...gamebuilder,
     })

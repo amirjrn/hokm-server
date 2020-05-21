@@ -3,11 +3,14 @@ import { turn } from './helpers/spreadTurn'
 import { Deck as Cards } from './cards'
 import { RoomStatus } from './roomStatus'
 import ITeam from './interfaces/ITeam'
+import IPlayer from './../player/interfaces/IPlayer'
+import { Player } from '../player/player'
 class GamePlayers {
   private _room_status: RoomStatus
   private _cards: Cards
+  private _player: IPlayer
 
-  private _players: Array<any>
+  private _players: IPlayer[]
   get players() {
     return this._players
   }
@@ -22,7 +25,7 @@ class GamePlayers {
     return this.hakemIndex
   }
 
-  private _teams: Array<any>
+  private _teams: ITeam[]
   get teams() {
     return this._teams
   }
@@ -36,12 +39,14 @@ class GamePlayers {
   constructor({
     cards,
     room_status,
+    player,
     hakem,
     hakemIndex,
     players,
     teams,
     playerTurn,
   }) {
+    this._player = player
     this._cards = cards
     this._room_status = room_status
     this._hakem = hakem
@@ -57,7 +62,7 @@ class GamePlayers {
     // if (!checkFull(this.#players_connected)) {
     //     return this.addDisconnectedPlayer(socket_id, name);
     // }
-    this._players.push({ name, socket_id: socket_id })
+    this._players.push(new Player({ name, socket_id }))
     this._room_status.players_connected++
     if (this._room_status.players_connected === 4) {
       this._room_status.startGame()
