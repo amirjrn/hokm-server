@@ -1,6 +1,6 @@
 import { GamePlayers } from './GamePlayers'
 import { Table } from './Table'
-import { Deck as Cards } from './Cards'
+import { Cards } from './Cards'
 import { RoomStatus } from './RoomStatus'
 import { Player } from '../player/player'
 import IGame from './interfaces/IGame'

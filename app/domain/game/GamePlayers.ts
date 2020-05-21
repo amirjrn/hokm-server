@@ -1,6 +1,6 @@
 import { findFirstَََAce } from './helpers/findFirstace'
 import { turn } from './helpers/spreadTurn'
-import { Deck as Cards } from './Cards'
+import { Cards } from './Cards'
 import { RoomStatus } from './RoomStatus'
 import ITeam from './interfaces/ITeam'
 import IPlayer from '../player/interfaces/IPlayer'
