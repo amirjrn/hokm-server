@@ -1,7 +1,7 @@
 import { GamePlayers } from './GamePlayers'
 import { Table } from './table'
 import { Deck as Cards } from './Cards'
-import { RoomStatus } from './roomStatus'
+import { RoomStatus } from './RoomStatus'
 import { Player } from '../player/player'
 import IGame from './interfaces/IGame'
 import IRoomStatus from './interfaces/IRoomStatus'
