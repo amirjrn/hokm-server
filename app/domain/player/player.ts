@@ -10,16 +10,7 @@ class Player implements IPlayer {
     this.connected
     this.cards = []
   }
-  disconnect() {
-    if (this.connected) {
-      this.connected = false
-    }
-  }
-  reconnect() {
-    if (!this.connected) {
-      this.connected = true
-    }
-  }
+
   getState() {
     return {
       name: this.name,

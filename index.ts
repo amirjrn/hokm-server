@@ -1,9 +1,10 @@
-const express = require('express')
+import * as express from 'express'
+import initServer from './app/socket-io'
+import { config } from 'dotenv'
 const app = express()
-const ioServer = require('./app/socket-io')(app)
-require('dotenv').config()
-
-const port = 3000
+const ioServer = initServer(app)
+config()
+const port = process.env.PORT || 3000
 
 //serve client with static files like index.html,img.png
 app.use(express.static('build'))

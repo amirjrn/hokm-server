@@ -15,7 +15,7 @@ class Cards {
     this._dealed_deck_tracker = dealed_deck_tracker
   }
   shuffle() {
-    this._shuffled_deck = shuffle(this._deck)
+    return (this._shuffled_deck = shuffle(this._deck))
   }
 
   deal() {

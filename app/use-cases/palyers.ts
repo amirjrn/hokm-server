@@ -1,13 +1,13 @@
 import { Player } from '../domain/player/player'
 import IplayersDb from './../data-access/interfaces/IplayerDb'
+import IsessionsDb from './../data-access/interfaces/IsessionDb'
 
-export function makeAddPlayer(playersDb: IplayersDb): Function {
+export function makeAddPlayer(playersDb: IplayersDb, sessionsDb: IsessionsDb, sessionG: () => string) {
   return async function (name: string, socket_id: string, callback) {
-    if (await playersDb.findByProp(name)) {
-      throw new Error('name taken')
-    }
-    await playersDb.insertObject(name, new Player(name, socket_id).getState())
-    callback('Ok')
+    const session = sessionG()
+    const addPlayerRes = await playersDb.insertObject(name, new Player({ name, socket_id }).getState())
+    await sessionsDb.saveSession({ session, name })
+    callback({ session })
   }
 }
 

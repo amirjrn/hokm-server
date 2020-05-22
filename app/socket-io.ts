@@ -2,7 +2,7 @@ import { ioEvents } from './routes'
 import { config } from 'dotenv'
 config()
 const redisHost = process.env.REDIS_HOST
-export function init(app) {
+export default function (app) {
   var server = require('http').Server(app)
   var io = require('socket.io')(server)
   const redis = require('socket.io-redis')

@@ -1,9 +1,9 @@
-import IPlayer from './../../player/interfaces/IPlayer'
+import IOnlinePlayer from './IOnlinePlayer'
 import ITeam from './ITeam'
 export default interface IGamePlayers {
   hakem: string
   hakemIndex: number
-  players: IPlayer
+  players: IOnlinePlayer
   teams: ITeam
   playerTurn: number
 }

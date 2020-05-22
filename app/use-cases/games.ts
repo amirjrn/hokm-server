@@ -1,7 +1,9 @@
 import { Gamebuilder } from '../domain/game/Game'
 import findWithError from './helpers/findWithError'
 import IgameDb from '../data-access/interfaces/IgameDb'
+import IsessionDb from '../data-access/interfaces/IsessionDb'
 import IGame from '../domain/game/interfaces/IGame'
+import { sessionsDb } from '../data-access'
 
 function makeListOfGames(gameDb: IgameDb): Function {
   return async function (): Promise<string[]> {
@@ -27,44 +29,32 @@ function makeFindGame(gameDb: IgameDb): Function {
     throw new Error('Game did not found')
   }
 }
-function makeAddPlayerToGame(gameDb: IgameDb): Function {
-  return async function (gameName: string, socket_id: string, name: string) {
+function makeAddPlayerToGame(gameDb: IgameDb, sessionDb: IsessionDb) {
+  return async function (gameName: string, socket_id: string, session: string) {
     const game_data = await findWithError(gameName, gameDb)
-    const game = new Gamebuilder(game_data.nameOfGame)
-      .reBuild(game_data)
-      .build()
-    const add_player_result = game.game_players.addPlayer(socket_id, name)
+    const name = await sessionDb.findBySession(session)
+    const game = new Gamebuilder(game_data.nameOfGame).reBuild(game_data).build()
+    const add_player_result = game.game_players.addPlayer(socket_id, name, session)
     gameDb.insertObject(gameName, game.GetState())
-    return { game, add_player_result }
+    return { game, add_player_result, name }
   }
 }
 function makePlayCard(gameDb: IgameDb): Function {
-  return async function (card, name, gameName) {
+  return async function (card, session, gameName) {
     const game_data = await findWithError(gameName, gameDb)
-    const game = new Gamebuilder(game_data.nameOfGame)
-      .reBuild(game_data)
-      .build()
-    const result = game.table.playCard(card, name)
+    const game = new Gamebuilder(game_data.nameOfGame).reBuild(game_data).build()
+    const result = game.table.playCard(card, session)
     gameDb.insertObject(gameName, game.GetState())
     return { game, result }
   }
 }
 function makeHokm(gameDb: IgameDb): Function {
-  return async function (suit, name, gameName) {
+  return async function (suit, session, gameName) {
     const game_data = await findWithError(gameName, gameDb)
-    const game = new Gamebuilder(game_data.nameOfGame)
-      .reBuild(game_data)
-      .build()
-    game.table.hokm(suit, name)
+    const game = new Gamebuilder(game_data.nameOfGame).reBuild(game_data).build()
+    game.table.hokm(suit, session)
     gameDb.insertObject(gameName, game.GetState())
     return game
   }
 }
-export {
-  makeAddGame,
-  makeListOfGames,
-  makeFindGame,
-  makePlayCard,
-  makeHokm,
-  makeAddPlayerToGame,
-}
+export { makeAddGame, makeListOfGames, makeFindGame, makePlayCard, makeHokm, makeAddPlayerToGame }

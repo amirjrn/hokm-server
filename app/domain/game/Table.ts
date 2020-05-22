@@ -1,8 +1,10 @@
 import { setHighest } from './helpers/setHighest'
 import { moveCard } from './helpers/moveCard'
 import { GamePlayers } from './GamePlayers'
+import { RoomStatus } from './RoomStatus'
 class Table {
   private _GamePlayers: GamePlayers
+  private _RoomStatus: RoomStatus
 
   private _deck: Array<any>
   get deck(): Array<any> {
@@ -19,15 +21,16 @@ class Table {
     return this._currentCard
   }
 
-  constructor({ GamePlayers, deck, currentHokm, currentCard }) {
+  constructor({ GamePlayers, RoomStatus, deck, currentHokm, currentCard }) {
     this._GamePlayers = GamePlayers
+    this._RoomStatus = RoomStatus
     this._deck = deck
     this._currentHokm = currentHokm
     this._currentCard = currentCard
   }
 
-  hokm(suit, name) {
-    if (this._GamePlayers.hakem !== name) {
+  hokm(suit: string, session: string) {
+    if (this._RoomStatus.hakem !== session) {
       throw new Error('شما حاکم نیستید')
     }
     this._currentHokm = suit
@@ -36,23 +39,15 @@ class Table {
     this._currentCard = null
     this._deck = []
   }
-  playCard(card, name: string) {
-    var player = this._GamePlayers.players.find(
-      (player) => player.name === name
-    )
+  playCard(card, session: string) {
+    var player = this._GamePlayers.players.find((player) => player.session === session)
     if (!player) {
       return new Error('you can not send card to this room')
     }
-    if (
-      this._GamePlayers.players[this._GamePlayers._playerTurn].name !== name
-    ) {
+    if (this._GamePlayers.players[this._RoomStatus.playerTurn].session !== session) {
       return new Error('it is not your turn')
     }
-    if (
-      !player.cards.find(
-        (playerCard) => playerCard[0] === card[0] && playerCard[1] === card[1]
-      )
-    ) {
+    if (!player.cards.find((playerCard) => playerCard[0] === card[0] && playerCard[1] === card[1])) {
       return new Error("you don't have this card")
     }
     if (
@@ -74,13 +69,13 @@ class Table {
     }
     // if this is the first card to play , set the current card of game and change the player's turn
     if (!this._currentCard) {
-      this._GamePlayers.setPlayerTurn()
+      this._RoomStatus.setPlayerTurn()
       this._currentCard = card[1]
       return null
     }
     // if this is neither first card or last card only change the turn
     if (this._currentCard && this._deck.length !== 4) {
-      this._GamePlayers.setPlayerTurn()
+      this._RoomStatus.setPlayerTurn()
       return null
     }
   }
@@ -93,10 +88,8 @@ class Table {
       team.players.find((player) => player === winnerPlayer)
     )
     winnerTeam.won_bazi++
-    var winnnerPlayerIndex = this._GamePlayers.players
-      .map((e) => e.name)
-      .indexOf(winnerPlayer)
-    this._GamePlayers.setPlayerTurn(winnnerPlayerIndex)
+    var winnnerPlayerIndex = this._GamePlayers.players.map((e) => e.name).indexOf(winnerPlayer)
+    this._RoomStatus.setPlayerTurn(winnnerPlayerIndex)
     this.finishBazi()
     if (winnerTeam.won_bazi === 7) {
       this.setWinnerOfDast(winnerTeam)
@@ -107,12 +100,10 @@ class Table {
     return [winnerPlayer, false]
   }
   setWinnerOfDast(winnerTeam) {
-    this._GamePlayers.teams = this._GamePlayers.teams.map((team) =>
-      Object.assign(team, { won_bazi: 0 })
-    )
+    this._GamePlayers.teams = this._GamePlayers.teams.map((team) => Object.assign(team, { won_bazi: 0 }))
     winnerTeam.won_dast++
-    this._GamePlayers.setHakem(winnerTeam)
-    this._GamePlayers.spreadCards()
+    this._RoomStatus.setHakem(winnerTeam, this._GamePlayers.players)
+    this._RoomStatus.spreadCards(this._GamePlayers.players)
     if (winnerTeam.won_dast === 7) {
       this.setWinnerOfGame(winnerTeam)
     }

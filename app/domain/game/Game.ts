@@ -2,50 +2,40 @@ import { GamePlayers } from './GamePlayers'
 import { Table } from './Table'
 import { Cards } from './Cards'
 import { RoomStatus } from './RoomStatus'
-import { Player } from '../player/player'
+import { OnlinePlayer } from './OnlinePlayer'
 import IGame from './interfaces/IGame'
 import IRoomStatus from './interfaces/IRoomStatus'
-import IPlayer from '../player/interfaces/IPlayer'
+import IOnlinePlayer from './interfaces/IOnlinePlayer'
 import ITeam from './interfaces/ITeam'
 export class Game {
-  readonly nameOfGame: string
+  nameOfGame: string
 
-  private _table: Table
-  get table() {
-    return this._table
-  }
+  table: Table
 
-  private _game_players: GamePlayers
-  get game_players() {
-    return this.game_players
-  }
+  game_players: GamePlayers
 
   cards: Cards
   room_status: IRoomStatus
-  player: IPlayer
+  player: IOnlinePlayer
   constructor(gamebuilder: Gamebuilder) {
     this.nameOfGame = gamebuilder.nameOfGame
-    this.room_status = new RoomStatus({ ...gamebuilder })
     this.cards = new Cards({ ...gamebuilder })
-    this._game_players = new GamePlayers({
-      player: Player,
-      cards: this.cards,
-      room_status: this.room_status,
-      ...gamebuilder,
-    })
-    this._table = new Table({ GamePlayers: this._game_players, ...gamebuilder })
+    this.room_status = new RoomStatus({ cards: this.cards, ...gamebuilder })
+    this.game_players = new GamePlayers({ room_status: this.room_status, ...gamebuilder })
+    this.table = new Table({ GamePlayers: this.game_players, RoomStatus: this.room_status, ...gamebuilder })
   }
   GetState(): IGame {
     return {
       nameOfGame: this.nameOfGame,
       ...this.room_status.GetState(),
       ...this.cards.GetState(),
-      ...this._game_players.GetState(),
-      ...this._table.GetState(),
+      ...this.game_players.GetState(),
+      ...this.table.GetState(),
     }
   }
 }
 
+// game builder for game object
 export class Gamebuilder implements IGame {
   nameOfGame: string
   shuffled_deck: [number, string][]
@@ -57,7 +47,7 @@ export class Gamebuilder implements IGame {
   currentHokm: string
   currentCard: string
   playerTurn: number
-  players: IPlayer[]
+  players: IOnlinePlayer[]
   teams: ITeam[]
   status: string
   constructor(name: string) {
