@@ -7,7 +7,7 @@ export function makeAddPlayer(playersDb: IplayersDb, sessionsDb: IsessionsDb, se
     const session = sessionG()
     const addPlayerRes = await playersDb.insertObject(name, new Player({ name, socket_id }).getState())
     await sessionsDb.saveSession({ session, name })
-    callback({ session })
+    callback(session)
   }
 }
 
@@ -19,12 +19,10 @@ export function makeRemovePlayer(playersDb: IplayersDb): Function {
 export function makeDisconnectPlayer(playersDb: IplayersDb): Function {
   return async function (socket_id) {
     var player = await playersDb.findByProp(socket_id)
-    player.disconnect()
   }
 }
 export function makeReconnectPlayer(playersDb: IplayersDb): Function {
   return async function (socket_id) {
     var player = await playersDb.findByProp(socket_id)
-    player.reconnect()
   }
 }

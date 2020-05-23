@@ -15,7 +15,7 @@ const findGame = makeFindGame(gamesDb)
 const listOfGames = makeListOfGames(gamesDb)
 const addPlayerToGame = makeAddPlayerToGame(gamesDb, sessionsDb)
 const sendHokm = makeHokm(gamesDb)
-const playCard = makePlayCard(gamesDb)
+const playCard = makePlayCard(gamesDb, sessionsDb)
 
 // players use cases
 

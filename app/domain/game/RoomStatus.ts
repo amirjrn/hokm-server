@@ -34,12 +34,14 @@ class RoomStatus {
   get playerTurn() {
     return this._playerTurn
   }
-  constructor({ players_connected, status, hakemIndex, cards, playerTurn }) {
+
+  constructor({ cards, players_connected, status, hakemIndex, playerTurn, hakem }) {
     this._cards = cards
     this._players_connected = players_connected
     this._status = status
     this._hakemIndex = hakemIndex
     this._playerTurn = playerTurn
+    this._hakem = hakem
   }
 
   setHakem(winnerTeam, players) {
@@ -47,12 +49,12 @@ class RoomStatus {
     if (!winnerTeam && this._hakem === undefined) {
       this._cards.shuffle()
       this._hakemIndex = findFirstَََAce(this._cards)
-      this._hakem = players[this._hakemIndex].name
+      this._hakem = players[this._hakemIndex].session
     }
     // if previuos hakem is in winner team , hakem should not be changed . Otherwise hakem should be next player;
     else if (!winnerTeam.players.find((player) => player === this._hakem)) {
       this._hakemIndex = this._hakemIndex === 3 ? 0 : ++this._hakemIndex
-      this._hakem = players[this._hakemIndex].name
+      this._hakem = players[this._hakemIndex].session
     }
     // Every time hakem is changed , it is hakem's turn to play.
     this.setPlayerTurn(this._hakemIndex)
@@ -93,6 +95,8 @@ class RoomStatus {
       players_connected: this._players_connected,
       status: this._status,
       hakemIndex: this._hakemIndex,
+      hakem: this._hakem,
+      playerTurn: this._playerTurn,
     }
   }
 }

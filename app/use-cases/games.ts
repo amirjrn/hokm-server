@@ -1,6 +1,7 @@
 import { Gamebuilder } from '../domain/game/Game'
 import findWithError from './helpers/findWithError'
 import IgameDb from '../data-access/interfaces/IgameDb'
+import IOnlinePlayer from '../domain/game/interfaces/IOnlinePlayer'
 import IsessionDb from '../data-access/interfaces/IsessionDb'
 import IGame from '../domain/game/interfaces/IGame'
 import { sessionsDb } from '../data-access'
@@ -39,13 +40,14 @@ function makeAddPlayerToGame(gameDb: IgameDb, sessionDb: IsessionDb) {
     return { game, add_player_result, name }
   }
 }
-function makePlayCard(gameDb: IgameDb): Function {
+function makePlayCard(gameDb: IgameDb, sessionsDb: IsessionDb): Function {
   return async function (card, session, gameName) {
     const game_data = await findWithError(gameName, gameDb)
     const game = new Gamebuilder(game_data.nameOfGame).reBuild(game_data).build()
     const result = game.table.playCard(card, session)
-    gameDb.insertObject(gameName, game.GetState())
-    return { game, result }
+    await gameDb.insertObject(gameName, game.GetState())
+    const name = await sessionsDb.findBySession(session)
+    return { game, result, name }
   }
 }
 function makeHokm(gameDb: IgameDb): Function {

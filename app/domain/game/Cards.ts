@@ -9,10 +9,15 @@ class Cards {
     return this._shuffled_deck
   }
 
+  private _dealed_deck: [number, string][]
+  get dealed_deck() {
+    return this._dealed_deck
+  }
   constructor({ dealed_deck_tracker = 0, shuffled_deck = [] } = {}) {
     this._deck = Deck
     this._shuffled_deck = shuffled_deck
     this._dealed_deck_tracker = dealed_deck_tracker
+    this._dealed_deck = []
   }
   shuffle() {
     return (this._shuffled_deck = shuffle(this._deck))
@@ -20,7 +25,8 @@ class Cards {
 
   deal() {
     // return the last card and then increment the dealed deck tracker
-    return this._shuffled_deck[this._dealed_deck_tracker++]
+    this.dealed_deck.push(this._shuffled_deck[this._dealed_deck_tracker++])
+    return this.dealed_deck[this.dealed_deck.length - 1]
   }
   reset() {
     this._shuffled_deck = []

@@ -42,20 +42,23 @@ class Table {
   playCard(card, session: string) {
     var player = this._GamePlayers.players.find((player) => player.session === session)
     if (!player) {
-      return new Error('you can not send card to this room')
+      throw new Error('شما عضو این اتاق نیستید')
     }
     if (this._GamePlayers.players[this._RoomStatus.playerTurn].session !== session) {
-      return new Error('it is not your turn')
+      throw new Error('نوبت شما نیست')
     }
     if (!player.cards.find((playerCard) => playerCard[0] === card[0] && playerCard[1] === card[1])) {
-      return new Error("you don't have this card")
+      throw new Error('شما این کارت را ندارید')
     }
     if (
+      // if the game has already a played card in deck
       this._currentCard &&
+      // and this card's suit exists in player's cards
       player.cards.find((playerCard) => playerCard[1] === this._currentCard) &&
+      // but player does not play that
       this._currentCard !== card[1]
     ) {
-      return new Error('please play current card')
+      throw new Error('لطفا کارت موجود را بازی کنید')
     }
     const has_winner = this.moveCard(card, player)
     return has_winner

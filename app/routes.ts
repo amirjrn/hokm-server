@@ -7,7 +7,7 @@ import {
   sendCard,
   playerDisconnected,
 } from './controllers/index.js'
-import errorHandler from './controllers/helpers/errorHandler'
+import errorHandler from './controllers/errorHandler'
 // Routes should not be tightly coupled to socket library so we inject io object to routes
 export function ioEvents(io) {
   // Add event listeners after a user has connected.
@@ -19,6 +19,5 @@ export function ioEvents(io) {
     socket.on('hokm', errorHandler(hokm(socket, io)))
     socket.on('sendCard', errorHandler(sendCard(socket, io)))
     socket.on('disconnect', errorHandler(playerDisconnected(socket)))
-    socket.emit('numberOfPlayers', io.connections)
   })
 }
