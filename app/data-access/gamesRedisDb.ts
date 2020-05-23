@@ -1,10 +1,7 @@
 import IgameDb from './interfaces/IgameDb'
 import IGame from '../domain/game/interfaces/IGame'
 import { RedisClient } from 'redis'
-export default function makeGamesRedisDb(
-  makeDb: RedisClient,
-  promisify
-): IgameDb {
+export default function makeGamesRedisDb(makeDb: RedisClient, promisify): IgameDb {
   const getAsync = promisify(makeDb.get).bind(makeDb)
   const setAsync = promisify(makeDb.set).bind(makeDb)
   const deleteAsync = promisify(makeDb.del).bind(makeDb)
