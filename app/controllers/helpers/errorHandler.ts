@@ -7,7 +7,7 @@ export default function errorHandler(logger) {
         await controller(...arguments)
       } catch (err) {
         callback(err.message)
-        logger.log(err)
+        logger.log(err.message)
       }
     }
   }

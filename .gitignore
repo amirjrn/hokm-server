@@ -1,3 +1,4 @@
+*.log
 *.js
 node_modules
 *.env

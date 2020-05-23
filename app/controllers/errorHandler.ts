@@ -1,5 +1,5 @@
 import * as winston from 'winston'
-import errorHandler from './helpers/errorHandler'
+import errorHandlerMaker from './helpers/errorHandler'
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
@@ -25,6 +25,4 @@ if (process.env.NODE_ENV !== 'production') {
   )
 }
 
-export default function (logger) {
-  return errorHandler(logger)
-}
+export default errorHandlerMaker(logger)
