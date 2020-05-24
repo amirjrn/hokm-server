@@ -8,7 +8,7 @@ import IRoomStatus from './interfaces/IRoomStatus'
 import IOnlinePlayer from './interfaces/IOnlinePlayer'
 import ITeam from './interfaces/ITeam'
 export class Game {
-  nameOfGame: string
+  readonly nameOfGame: string
 
   table: Table
 

@@ -46,8 +46,7 @@ function makePlayCard(gameDb: IgameDb, sessionsDb: IsessionDb): Function {
     const game = new Gamebuilder(game_data.nameOfGame).reBuild(game_data).build()
     const result = game.table.playCard(card, session)
     await gameDb.insertObject(gameName, game.GetState())
-    const name = await sessionsDb.findBySession(session)
-    return { game, result, name }
+    return { game, result }
   }
 }
 function makeHokm(gameDb: IgameDb): Function {

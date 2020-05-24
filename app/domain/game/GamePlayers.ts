@@ -44,13 +44,13 @@ class GamePlayers {
     this._teams = [
       {
         //the first team includes first and third players from players list
-        players: [this._players[0].name, this._players[2].name],
+        players: [this._players[0].session, this._players[2].session],
         won_dast: 0,
         won_bazi: 0,
       },
       // the second team includes second and forth player from players list
       {
-        players: [this._players[1].name, this._players[3].name],
+        players: [this._players[1].session, this._players[3].session],
         won_dast: 0,
         won_bazi: 0,
       },

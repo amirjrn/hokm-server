@@ -39,9 +39,9 @@ export function hokm(socket, io) {
 export function sendCard(socket, io) {
   return async function (cardNumber, cardSuit, session, gameName) {
     var card = [Number(cardNumber), cardSuit]
-    const { game, result, name } = await playCard(card, session, gameName)
+    const { game, result } = await playCard(card, session, gameName)
     socket.emit('removeCard', card)
-    game.game_players.players.map((player) => io.to(player.socket_id).emit('cardPlayed', card, name))
+    game.game_players.players.map((player) => io.to(player.socket_id).emit('cardPlayed', card, session))
     checkWinner(result, game, io)
   }
 }

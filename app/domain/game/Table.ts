@@ -74,11 +74,13 @@ class Table {
     if (!this._currentCard) {
       this._RoomStatus.setPlayerTurn()
       this._currentCard = card[1]
+      //tell caller there is still no winner
       return null
     }
     // if this is neither first card or last card only change the turn
     if (this._currentCard && this._deck.length !== 4) {
       this._RoomStatus.setPlayerTurn()
+      //tell caller there is still no winner
       return null
     }
   }
@@ -91,7 +93,7 @@ class Table {
       team.players.find((player) => player === winnerPlayer)
     )
     winnerTeam.won_bazi++
-    var winnnerPlayerIndex = this._GamePlayers.players.map((e) => e.name).indexOf(winnerPlayer)
+    var winnnerPlayerIndex = this._GamePlayers.players.map((player) => player.session).indexOf(winnerPlayer)
     this._RoomStatus.setPlayerTurn(winnnerPlayerIndex)
     this.finishBazi()
     if (winnerTeam.won_bazi === 7) {
