@@ -3,5 +3,7 @@ export default interface IRoomStatus {
   status: string
   hakemIndex: number
   hakem: string
+  setHakem: Function
+  startGame: Function
   GetState: Function
 }

@@ -1,4 +1,4 @@
-import { sortCards } from './../../../../../app/domain/game/helpers/sortCards'
+import { sortCards } from '../../../../../app/domain/game/helpers/sortCards'
 import { expect } from 'chai'
 describe('SortCards', function () {
   it('should take an array of cards as argument and return the highest card', function () {

@@ -30,6 +30,7 @@ class Cards {
   }
   reset() {
     this._shuffled_deck = []
+    this._dealed_deck = []
     this._dealed_deck_tracker = 0
   }
   GetState() {

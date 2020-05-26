@@ -33,8 +33,6 @@ class GamePlayers {
     if (this._room_status.players_connected === 4) {
       this.initTeams()
       this._room_status.startGame()
-      this._room_status.setHakem(null, this._players)
-      this._room_status.spreadCards(this._players)
       return 'start game'
     }
     return 'ok'

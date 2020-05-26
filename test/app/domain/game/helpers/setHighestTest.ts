@@ -1,4 +1,4 @@
-import { setHighest } from './../../../../../app/domain/game/helpers/setHighest'
+import { setHighest } from '../../../../../app/domain/game/helpers/setHighest'
 import { expect } from 'chai'
 describe('setHighest in normal mode', function () {
   it('should return highest card in a deck', function () {

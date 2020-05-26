@@ -2,7 +2,6 @@ import { GamePlayers } from './GamePlayers'
 import { Table } from './Table'
 import { Cards } from './Cards'
 import { RoomStatus } from './RoomStatus'
-import { OnlinePlayer } from './OnlinePlayer'
 import IGame from './interfaces/IGame'
 import IRoomStatus from './interfaces/IRoomStatus'
 import IOnlinePlayer from './interfaces/IOnlinePlayer'
@@ -72,10 +71,14 @@ export class Gamebuilder implements IGame {
     players_connected = this.players_connected,
     status = this.status,
     hakemIndex = this.hakemIndex,
+    playerTurn = this.playerTurn,
+    hakem = this.hakem,
   } = {}) {
     this.players_connected = players_connected
     this.status = status
     this.hakemIndex = hakemIndex
+    this.playerTurn = playerTurn
+    this.hakem = hakem
     return this
   }
   setCards({ dealed_deck, shuffled_deck }) {
@@ -97,7 +100,7 @@ export class Gamebuilder implements IGame {
     this.playerTurn = playerTurn
     return this
   }
-  setTable({ deck, currentHokm, currentCard }) {
+  setTable({ deck = this.deck, currentHokm = this.currentHokm, currentCard = this.currentCard } = {}) {
     this.deck = deck
     this.currentCard = currentCard
     this.currentHokm = currentHokm

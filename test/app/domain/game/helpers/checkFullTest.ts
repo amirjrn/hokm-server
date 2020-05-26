@@ -1,4 +1,4 @@
-import { checkFull } from './../../../../../app/domain/game/helpers/checkFull'
+import { checkFull } from '../../../../../app/domain/game/helpers/checkFull'
 import { expect } from 'chai'
 
 describe('checkfull', function () {

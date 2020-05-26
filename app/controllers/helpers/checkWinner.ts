@@ -1,4 +1,3 @@
-import IGame from '../../domain/game/interfaces/IGame'
 export default function (result, game, io) {
   if (result) {
     game.game_players.players.map((player) => io.to(player.socket_id).emit('winnerBazi', result[0]))

@@ -1,5 +1,7 @@
-*.log
+.log
 *.js
 node_modules
-*.env
+.env
 .history
+coverage
+.nyc_output

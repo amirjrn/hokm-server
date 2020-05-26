@@ -4,18 +4,17 @@ import { expect } from 'chai'
 describe('Game addplayer method', function () {
   it('Takes player name(session) and socket-id and add it to players list as an object', function () {
     var game = new Gamebuilder('game').setGamePlayers().build()
-    game.game_players.addPlayer('sss12', 'ali')
-    expect(game.game_players._players[0].socket_id).to.be.equal('sss12')
-    expect(game.game_players._players[0].name).to.be.equal('ali')
+    game.game_players.addPlayer('sss12', 'ali', 'ddd12')
+    expect(game.game_players.players[0].socket_id).to.be.equal('sss12')
+    expect(game.game_players.players[0].name).to.be.equal('ali')
+    expect(game.game_players.players[0].session).to.be.equal('ddd12')
   })
 })
 
 describe('Game addplayer method', function () {
   it('Takes player name(session) and socket-id and throw error if connected players are equal to four ', function () {
-    var game = new Gamebuilder('game')
-      .setRoomStatus({ players_connected: 4, status: 'Game Started' })
-      .build()
-    expect(game.game_players.addPlayer('sdf12', 'reza')).to.throw
+    var game = new Gamebuilder('game').setRoomStatus({ players_connected: 4, status: 'Game Started' }).build()
+    expect(game.game_players.addPlayer.bind(game.game_players, 'sdf12', 'reza', 'd1222')).to.throw()
   })
 })
 

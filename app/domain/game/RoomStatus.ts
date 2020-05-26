@@ -43,9 +43,9 @@ class RoomStatus {
     this._playerTurn = playerTurn
     this._hakem = hakem
   }
-
+  // set hakem from players object based on previous winner or randomly
   setHakem(winnerTeam, players) {
-    // if it is the first game , the game has no winner so hakem should be set randomly.
+    // if it is the first bazi of a gameRoom , the game has no winner so hakem should be set randomly.
     if (!winnerTeam && this._hakem === undefined) {
       this._cards.shuffle()
       this._hakemIndex = findFirstَََAce(this._cards)
@@ -72,7 +72,6 @@ class RoomStatus {
     }
   }
   spreadCards(players) {
-    console.log(players)
     this._cards.reset()
     this._cards.shuffle()
     players[turn(this._hakemIndex, 0)].cards = this._cards.shuffled_deck.slice(0, 13)
@@ -87,7 +86,6 @@ class RoomStatus {
     this._status === 'Game Started'
   }
   startGame() {
-    // this.setHakem(null);
     this._status = 'Game Started'
   }
   GetState() {

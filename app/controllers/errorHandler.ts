@@ -1,9 +1,9 @@
 import * as winston from 'winston'
 import errorHandlerMaker from './helpers/errorHandler'
 const logger = winston.createLogger({
-  level: 'info',
+  level: 'warn',
   format: winston.format.json(),
-  defaultMeta: { service: 'user-service' },
+  defaultMeta: { service: 'hokm-game' },
   transports: [
     //
     // - Write all logs with level `error` and below to `error.log`
